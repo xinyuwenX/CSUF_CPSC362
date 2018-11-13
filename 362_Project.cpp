@@ -476,7 +476,7 @@ vector<string> find_addresses(string file_name) {
 
 void check_out(char* src, string manifest, char* dest)
 {
-    char* temp = "\\temp"
+    const char* temp = "\\temp";
     vector<string> v_addresses;
     v_addresses = find_addresses(manifest);
     _mkdir(src+temp);
