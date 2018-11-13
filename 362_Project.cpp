@@ -476,15 +476,10 @@ vector<string> find_addresses(string file_name) {
 }
 
 
-void check_out(char* src, string manifest, char* dest)
-{
-    const char* temp = "\\temp";
-    vector<string> v_addresses;
-    v_addresses = find_addresses(manifest);
-    _mkdir(src+temp);
-    for(int i = 0; i < v_addresses.size(); i++)
-    {
-        copyFile_noManifest(v_addresses[i], src+temp);
+void check_out(char* src, string manifest, char* dest) {
+    vector<string> v_addresses = find_addresses(manifest);
+    for(int i = 0; i < v_addresses.size(); i++) {
+        copyFile_noManifest(v_addresses[i], src+dest);
+        writeFile(manifest, v_addresses);
     }
-    copyFile(src+temp, dest, manifest, strlen(dest))
 }
