@@ -105,6 +105,7 @@ int main(int argc, char *argv[]) {
     else if (command_line == "Check-In") {
         //create manifest file
         writeFile(manifest, message);
+        writeFile(manifest, ctime(&now));
         //write label.txt
         writeFile(label_file, label_default.c_str());
         status = copyDir(src, dest, manifest, strlen(dest));
@@ -114,6 +115,7 @@ int main(int argc, char *argv[]) {
     else if (command_line == "Check-Out") {
         //create manifest file
         writeFile(manifest, message);
+        writeFile(manifest, ctime(&now));
         //write label.txt
         writeFile(label_file, label_default.c_str());
         
@@ -133,7 +135,7 @@ int main(int argc, char *argv[]) {
     
     //display execution result
     if (status == 0) {
-        cout << command_line<<" successfully." << endl << endl;
+        cout << command_line<<" successful." << endl << endl;
     }
     else {
         cout <<command_line<< " Failed." << endl << endl;
