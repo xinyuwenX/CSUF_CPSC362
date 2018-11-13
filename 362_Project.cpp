@@ -476,12 +476,13 @@ vector<string> find_addresses(string file_name) {
 
 void check_out(char* src, string manifest, char* dest)
 {
+    char* temp = "\\temp"
     vector<string> v_addresses;
     v_addresses = find_addresses(manifest);
-    _mkdir("temp");
+    _mkdir(src+temp);
     for(int i = 0; i < v_addresses.size(); i++)
     {
-        copyFile_noManifest(v_addresses[i], "temp");
+        copyFile_noManifest(v_addresses[i], src+temp);
     }
-    copyFile(<#char *src_file#>, <#char *dest_file#>, <#char *manifest#>, int cut)
+    copyFile(src+temp, dest, manifest, strlen(dest))
 }
