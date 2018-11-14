@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
 	//test:
 	const char *command_line = "LABEL";
 	//get arg
-	if ((command_line == "CREATE") || (command_line=="CHECKIN")){// command_line = "CHEKIN") {
+	if ((command_line == "CREATE") || (command_line=="CHECKIN")){
 		//const char *src = argv[2];
 		//const char *dest = argv[3];
 	}
