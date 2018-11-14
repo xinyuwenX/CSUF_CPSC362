@@ -112,8 +112,6 @@ int main(int argc, char *argv[]) {
 		//write label.txt
 		writeFile(label_file, label_default.c_str());
 		status = copyDir(src, dest, manifest, strlen(dest));
-
-		//Check_In(int argc, char *argv[]);
 	}
 	else if (command_line == "Check-Out") {
 		//create manifest file
@@ -146,8 +144,6 @@ int main(int argc, char *argv[]) {
 	system("pause");
 	return 0;
 }
-
-
 
 void addLabel(char filename[]) {
 
@@ -234,7 +230,6 @@ void copyFile(char * src_file, char * dest_file, char * manifest, int cut) {
 	//write manifest file
 	writeFile(manifest, dest_file + cut);
 }
-
 
 //create repository
 int copyDir(const char * p_src, const char * p_dest, char * manifest, int cut) {
@@ -359,6 +354,7 @@ bool mapToFile(char filename[], map<string, string> &fileMap)     //Write Map
 	}
 	return true;
 }
+
 bool fileToMap(char filename[], map<string, string> &fileMap)  //Read Map
 {
 	ifstream ifile;
@@ -408,21 +404,6 @@ void splitString(vector<string> &v_str, string str, char ch)
 		old_pos = ++pos;
 	}
 }
-
-//void Check_In(int argc, char *argv[])
-//{
-//	int status = 0;
-//	const char * src = argv[1];
-//	const char * dest = argv[2];
-//	status = copyFile(src, dest, manifest, cut);
-//	if (status == 0)
-//	{
-//		cout << "Successfully Check In!!!" << endl << endl;
-//	}
-//	else {
-//		cout << "Failed to Check In!!!" << endl << endl;
-//	}
-//}
 
 //extract addresses from a manifest file then store them into a vector
 vector<string> find_addresses_artID(string file_name) {
