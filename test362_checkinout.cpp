@@ -234,25 +234,6 @@ void copyFile(char * src_file, char * dest_file, char * manifest, int cut) {
 	writeFile(manifest, dest_file + cut);
 }
 
-void copyFile_noManifest(char * src_file, char * dest_file) {
-
-	const int buff_size = 16384;
-	char buffer[buff_size];
-	size_t in_bytes, out_bytes;
-
-	FILE * in_file = fopen(src_file, "rb");
-	FILE * out_file = fopen(dest_file, "wb");
-
-	//read source file contents then write into the artifact
-	while (!feof(in_file)) {
-		in_bytes = fread(buffer, 1, buff_size, in_file);
-		out_bytes = fwrite(buffer, 1, in_bytes, out_file);
-	}
-
-	fclose(in_file);
-	fclose(out_file);
-}
-
 
 //create repository
 int copyDir(const char * p_src, const char * p_dest, char * manifest, int cut) {
