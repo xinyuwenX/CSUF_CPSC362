@@ -55,9 +55,28 @@ int main(int argc, char *argv[]) {
 	//status = copyDir("C:\\Users\\yintaowang\\test\\src", "C:\\Users\\yintaowang\\test\\repo");
 	//test:
 	const char *command_line = "LABEL";
-	char src[260] = "C:\\Users\\yintaowang\\test\\src";
+	//get arg
+	if ((command_line == "CREATE") || (command_line=="CHECKIN")){// command_line = "CHEKIN") {
+		//const char *src = argv[2];
+		//const char *dest = argv[3];
+	}
+	else if (command_line == "CHECKOUT") {
+		//const char *src = argv[2];
+		//const char *dest = argv[3];
+		//const char *r_manifest = argv[4];
+	}
+	else if (command_line=="LABEL") {
+		//const char *label = argv[2];
+		//const char *target = argv[3];
+	}
+	//get arg end
+	/*char src[260] = "C:\\Users\\yintaowang\\test\\src";
 	char dest[260] = "C:\\Users\\yintaowang\\test\\repo";
-	char r_manifest[260] = "C:\\Users\\yintaowang\\test\\repo\\manifest_17.txt";
+	char r_manifest[260] = "C:\\Users\\yintaowang\\test\\repo\\manifest_17.txt";*/
+
+	const char *src = "C:\\Users\\yintaowang\\test\\src";
+	const char *dest = "C:\\Users\\yintaowang\\test\\repo";
+	const char *r_manifest = "C:\\Users\\yintaowang\\test\\repo\\manifest_17.txt";
 
 
 	//get manifest dir
@@ -114,7 +133,7 @@ int main(int argc, char *argv[]) {
 		writeFile(manifest, message);
 		writeFile(manifest, ctime(&now));
 		//check out
-		check_out(src, dest, r_manifest, manifest);
+		check_out(strdup(src), strdup(dest), strdup(r_manifest), manifest);
 	}
 	else if (command_line == "LABEL") {
 		//labeling
@@ -509,4 +528,3 @@ void check_out(char* src, char * dest, char* r_manifest, char * w_manifest) {
         //writeFile(manifest, v_addresses);
     }
 }
-
