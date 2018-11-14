@@ -54,15 +54,15 @@ int main(int argc, char *argv[]) {
 	//status = copyDir(src, dest);
 	//status = copyDir("C:\\Users\\yintaowang\\test\\src", "C:\\Users\\yintaowang\\test\\repo");
 	//test:
-	const char *command_line = "Label";
+	const char *command_line = "LABEL";
 	char src[260] = "C:\\Users\\yintaowang\\test\\src";
 	char dest[260] = "C:\\Users\\yintaowang\\test\\repo";
-	char r_manifest[260] = "C:\\Users\\yintaowang\\test\\repo\\manifest_1.txt";
+	char r_manifest[260] = "C:\\Users\\yintaowang\\test\\repo\\manifest_17.txt";
 
 
 	//get manifest dir
 	//char manifest_path[260];
-	if (command_line == "Check-Out") {
+	if (command_line == "CHECKOUT") {
 		strcpy(manifest_path, src);
 	}
 	else {
@@ -91,40 +91,32 @@ int main(int argc, char *argv[]) {
 	strcpy(label_file, dest);
 	strcat(label_file, "\\label.txt");
 
-	//default label
 	string label_default = "";
-	//label_default.append(", ");
-	//label_default.append(manifest_name);
 
-	if (command_line == "Create") {
+	if (command_line == "CREATE") {
 		//create manifest file
 		writeFile(manifest, message);
 		writeFile(manifest, ctime(&now));
-		//create label.txt and write default key/value
+		//create label.txt
 		writeFile(label_file, label_default.c_str());
-
+		//create repository
 		status = copyDir(src, dest, manifest, strlen(dest));
 	}
-	else if (command_line == "Check-In") {
+	else if (command_line == "CHECKIN") {
 		//create manifest file
 		writeFile(manifest, message);
 		writeFile(manifest, ctime(&now));
-		//write label.txt
-		writeFile(label_file, label_default.c_str());
+		//check in
 		status = copyDir(src, dest, manifest, strlen(dest));
 	}
-	else if (command_line == "Check-Out") {
+	else if (command_line == "CHECKOUT") {
 		//create manifest file
 		writeFile(manifest, message);
 		writeFile(manifest, ctime(&now));
-		//write label.txt
-		writeFile(label_file, label_default.c_str());
-
-		//check out function
+		//check out
 		check_out(src, dest, r_manifest, manifest);
-
 	}
-	else if (command_line == "Label") {
+	else if (command_line == "LABEL") {
 		//labeling
 		addLabel(label_file);
 	}
@@ -136,7 +128,7 @@ int main(int argc, char *argv[]) {
 
 	//display execution result
 	if (status == 0) {
-		cout << command_line << " successful." << endl << endl;
+		cout << command_line << " successfully." << endl << endl;//update
 	}
 	else {
 		cout << command_line << " Failed." << endl << endl;
@@ -442,7 +434,7 @@ vector<string> find_addresses_fileName(vector<string> v_addresses) {
     vector<string> all_addresses = v_addresses;
     int index_last_backslash;
     string temp_string;
-    for(int i = 0; i < all_addresses.size(); i++) {
+    for(int i = 0; i < all_addresses.size()-1; i++) {
         for(int j = 0; j < all_addresses[i].length(); j++) {
             if(all_addresses[i][j] == '\\')
                 index_last_backslash = j;
@@ -454,23 +446,6 @@ vector<string> find_addresses_fileName(vector<string> v_addresses) {
         }
     }
     return all_addresses;
-}
-
-vector<string> eliminate_repeat(vector<string> v_addresses) {
-    vector<string> addresses_no_repeat;
-    bool repeat;
-    for(int i = 0; i < v_addresses.size(); i++) {
-        repeat = false;
-        for(int j = 0; j < addresses_no_repeat.size(); j++) {
-            if(v_addresses[i] == addresses_no_repeat[j]) {
-                repeat = true;
-                break;
-            }
-        }
-        if(!repeat)
-            addresses_no_repeat.push_back(v_addresses[i]);
-    }
-    return addresses_no_repeat;
 }
 
 //string to char*
@@ -495,11 +470,11 @@ void check_out(char* src, char * dest, char* r_manifest, char * w_manifest) {
     char* temp_src;
     char* temp_dest;
     
-    for (int i = 0; i < v_addresses.size(); i++) {
-        temp_src = string_charStar(v_addresses[i]);
-        temp_dest = string_charStar(v_addresses_fileName[i]);
-        strcpy(src, temp_src);
-	strcpy(dest, temp_dest);
+    for (int i = 0; i < v_addresses.size()-1; i++) {
+        temp_src = &v_addresses[i][0u];
+	temp_dest = &v_addresses_fileName[i][0u];
+	strcat(src, temp_src);
+	strcat(dest, temp_dest);
 	copyFile(src, dest, w_manifest, 0);
         //copyFile_noManifest(v_addresses[i], src + dest);
         //writeFile(manifest, v_addresses);
