@@ -488,14 +488,25 @@ void check_out(char* src, char * dest, char* r_manifest, char * w_manifest) {
     vector<string> v_addresses_folder_no_repeat = eliminate_repeat(v_addresses_folder);
     char* temp_src;
     char* temp_dest;
+    string cmd;
+    string temp;
+    
+    for(int i = 0; i < v_addresses_folder_no_repeat.size(); i++) {
+        cmd = "mkdir ";
+        temp = src;
+        cmd += temp;
+        cmd += v_addresses_folder_no_repeat[i];
+        system(cmd);
+    }
     
     for (int i = 0; i < v_addresses.size()-1; i++) {
         temp_src = &v_addresses[i][0u];
-	temp_dest = &v_addresses_fileName[i][0u];
-	strcat(src, temp_src);
-	strcat(dest, temp_dest);
-	copyFile(src, dest, w_manifest, 0);
+        temp_dest = &v_addresses_fileName[i][0u];
+        strcat(src, temp_src);
+        strcat(dest, temp_dest);
+        copyFile(src, dest, w_manifest, 0);
         //copyFile_noManifest(v_addresses[i], src + dest);
         //writeFile(manifest, v_addresses);
     }
 }
+
