@@ -424,7 +424,7 @@ void splitString(vector<string> &v_str, string str, char ch)
 //}
 
 //extract addresses from a manifest file then store them into a vector
-vector<string> find_addresses(string file_name) {
+vector<string> find_addresses_artID(string file_name) {
     ifstream file;
     char c;
     string temp;
@@ -452,7 +452,12 @@ vector<string> find_addresses(string file_name) {
     }
     file.close();
     
-    //remove the content after the last '\'
+    return all_addresses;
+}
+
+//remove the content after the last '\'
+vector<string> find_addresses_fileName(vector<string> v_addresses) {
+    vector<string> all_addresses = v_addresses;
     int index_last_backslash;
     string temp_string;
     for(int i = 0; i < all_addresses.size(); i++) {
@@ -471,10 +476,12 @@ vector<string> find_addresses(string file_name) {
 
 
 void check_out(char* src, char * dest, char* r_manifest, char * w_manifest) {
-	vector<string> v_addresses = find_addresses(r_manifest);
-	for (int i = 0; i < v_addresses.size(); i++) {
-		copyFile(src+v_addresses[i], dest, w_manifest, 0);
-		//copyFile_noManifest(v_addresses[i], src + dest);
-		//writeFile(manifest, v_addresses);
-	}
+    vector<string> v_addresses = find_addresses_artID(r_manifest);
+    vector<string> v_addresses_fileName = find_addresses_fileName(v_addresses);
+    
+    for (int i = 0; i < v_addresses.size(); i++) {
+        copyFile(src+v_addresses[i], dest+v_addresses_fileName[i], w_manifest, 0);
+        //copyFile_noManifest(v_addresses[i], src + dest);
+        //writeFile(manifest, v_addresses);
+    }
 }
