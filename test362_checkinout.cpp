@@ -468,8 +468,8 @@ vector<string> find_addresses_fileName(vector<string> v_addresses) {
         }
         temp_string = all_addresses[i];
         all_addresses[i] = "";
-        for(int k = 0; k < j; k++) {
-            all_addresses[i] += temp_string[k];
+        for(int j = 0; j < index_last_backslash; j++) {
+            all_addresses[i] += temp_string[j];
         }
     }
     return all_addresses;
