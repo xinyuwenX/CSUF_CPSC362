@@ -40,7 +40,7 @@ void splitString(vector<string> &v_str, string str, char ch);
 void addLabel(char filename[]);
 vector<string> find_addresses_artID(string file_name);
 vector<string> find_addresses_fileName(vector<string> v_addresses);
-void check_out(char* src, string manifest, char* dest);
+void check_out(char* src, char * dest, char* r_manifest, char * w_manifest);
 int num_of_manifest;
 
 int main(int argc, char *argv[]) {
