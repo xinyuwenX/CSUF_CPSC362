@@ -444,33 +444,48 @@ void splitString(vector<string> &v_str, string str, char ch)
 
 //extract addresses from a manifest file then store them into a vector
 vector<string> find_addresses(string file_name) {
-	ifstream file;
-	char c;
-	string temp;
-	vector<string> all_addresses;
-	unsigned line_counter = 0;
-
-	file.open(file_name);
-	while (true) {
-		temp = "";
-		while (true) {
-			c = file.get();
-			if (c == '\n' || c == EOF)
-				break;
-			else
-				temp += c;
-		}
-		//skip the first 2 lines
-		if (line_counter < 2) {
-			line_counter++;
-			continue;
-		}
-		all_addresses.push_back(temp);
-		if (c == EOF)
-			break;
-	}
-	file.close();
-	return all_addresses;
+    ifstream file;
+    char c;
+    string temp;
+    vector<string> all_addresses;
+    unsigned line_counter = 0;
+    
+    file.open(file_name);
+    while (true) {
+        temp = "";
+        while (true) {
+            c = file.get();
+            if (c == '\n' || c == EOF)
+                break;
+            else
+                temp += c;
+        }
+        //skip the first 3 lines
+        if (line_counter < 3) {
+            line_counter++;
+            continue;
+        }
+        all_addresses.push_back(temp);
+        if (c == EOF)
+            break;
+    }
+    file.close();
+    
+    //remove the content after the last '\'
+    int index_last_backslash;
+    string temp_string;
+    for(int i = 0; i < all_addresses.size(); i++) {
+        for(int j = 0; j < all_addresses[i].length(); j++) {
+            if(all_addresses[i][j] == '\\')
+                index_last_backslash = j;
+        }
+        temp_string = all_addresses[i];
+        all_addresses[i] = "";
+        for(int k = 0; k < j; k++) {
+            all_addresses[i] += temp_string[k];
+        }
+    }
+    return all_addresses;
 }
 
 
