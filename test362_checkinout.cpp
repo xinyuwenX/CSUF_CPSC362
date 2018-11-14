@@ -456,13 +456,24 @@ vector<string> find_addresses_fileName(vector<string> v_addresses) {
     return all_addresses;
 }
 
+//string to char*
+char* string_charStar(string s) {
+    char* c;
+    c = (char *)malloc((s.length()+1)*sizeof(char));
+    s.copy(c,s.length(),0);
+    return c;
+}
 
 void check_out(char* src, char * dest, char* r_manifest, char * w_manifest) {
     vector<string> v_addresses = find_addresses_artID(r_manifest);
     vector<string> v_addresses_fileName = find_addresses_fileName(v_addresses);
+    char* temp_src;
+    char* temp_dest;
     
     for (int i = 0; i < v_addresses.size(); i++) {
-        copyFile(src+v_addresses[i], dest+v_addresses_fileName[i], w_manifest, 0);
+        temp_src = string_charStar(v_addresses[i]);
+        temp_dest = string_charStar(v_addresses_fileName[i]);
+        copyFile(src+v_addresses[i], dest+temp, w_manifest, 0);
         //copyFile_noManifest(v_addresses[i], src + dest);
         //writeFile(manifest, v_addresses);
     }
