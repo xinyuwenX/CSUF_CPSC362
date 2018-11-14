@@ -508,11 +508,10 @@ void check_out(char* src, char * dest, char* r_manifest, char * w_manifest) {
     char* temp_src;
     char* temp_dest;
     string cmd;
-    string temp;
     
     for(int i = 0; i < v_addresses_folder_no_repeat.size(); i++) {
         cmd = "mkdir ";
-        temp(src);
+        string temp(dest);
         cmd += temp;
         cmd += v_addresses_folder_no_repeat[i];
         system(cmd);
