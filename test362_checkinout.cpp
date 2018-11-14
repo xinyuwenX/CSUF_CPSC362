@@ -38,7 +38,8 @@ bool mapToFile(char filename[], map<string, string> &fileMap);
 bool fileToMap(char filename[], map<string, string> &fileMap);
 void splitString(vector<string> &v_str, string str, char ch);
 void addLabel(char filename[]);
-vector<string> find_addresses(string file_name);
+vector<string> find_addresses_artID(string file_name);
+vector<string> find_addresses_fileName(vector<string> v_addresses);
 void check_out(char* src, string manifest, char* dest);
 int num_of_manifest;
 
