@@ -467,6 +467,8 @@ string label_to_manifest(string label) {
 void check_out(char* src, char * dest, char* r_manifest, char * w_manifest) {
     vector<string> v_addresses = find_addresses_artID(r_manifest);
     vector<string> v_addresses_fileName = find_addresses_fileName(v_addresses);
+	vector<string> v_addresses_folder = find_addresses_fileName(v_addresses);
+    vector<string> v_addresses_folder_no_repeat = eliminate_repeat(v_addresses_folder);
     char* temp_src;
     char* temp_dest;
     
