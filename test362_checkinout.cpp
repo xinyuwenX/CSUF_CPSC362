@@ -417,7 +417,7 @@ void splitString(vector<string> &v_str, string str, char ch)
 }
 
 //extract addresses from a manifest file then store them into a vector
-vector<string> find_addresses_artID(string file_name) {
+vector<string> find_addresses(string file_name) {
     ifstream file;
     char c;
     string temp;
@@ -467,23 +467,6 @@ vector<string> find_addresses_fileName(vector<string> v_addresses) {
     return all_addresses;
 }
 
-vector<string> eliminate_repeat(vector<string> v_addresses) {
-    vector<string> addresses_no_repeat;
-    bool repeat;
-    for(int i = 0; i < v_addresses.size(); i++) {
-        repeat = false;
-        for(int j = 0; j < addresses_no_repeat.size(); j++) {
-            if(v_addresses[i] == addresses_no_repeat[j]) {
-                repeat = true;
-                break;
-            }
-        }
-        if(!repeat)
-            addresses_no_repeat.push_back(v_addresses[i]);
-    }
-    return addresses_no_repeat;
-}
-
 //string to char*
 char* string_charStar(string s) {
     char* c;
@@ -503,11 +486,12 @@ string label_to_manifest(string label) {
 void check_out(char* src, char * dest, char* r_manifest, char * w_manifest) {
     vector<string> v_addresses = find_addresses_artID(r_manifest);
     vector<string> v_addresses_fileName = find_addresses_fileName(v_addresses);
-    vector<string> v_addresses_folder = find_addresses_fileName(v_addresses);
+    vector<string> v_addresses_folder = find_addresses_fileName(v_addresses_fileName);
     vector<string> v_addresses_folder_no_repeat = eliminate_repeat(v_addresses_folder);
     char* temp_src;
     char* temp_dest;
     string cmd;
+    
     
     for(int i = 0; i < v_addresses_folder_no_repeat.size(); i++) {
         cmd = "mkdir ";
