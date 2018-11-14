@@ -464,6 +464,14 @@ char* string_charStar(string s) {
     return c;
 }
 
+string label_to_manifest(string label) {
+    map<string, string> fileMap;
+    char* fileName = string_charStar("Label.txt");
+    fileToMap(fileName, fileMap);
+    string manifest = fileMap["label"];
+    return manifest;
+}
+
 void check_out(char* src, char * dest, char* r_manifest, char * w_manifest) {
     vector<string> v_addresses = find_addresses_artID(r_manifest);
     vector<string> v_addresses_fileName = find_addresses_fileName(v_addresses);
