@@ -473,7 +473,7 @@ void check_out(char* src, char * dest, char* r_manifest, char * w_manifest) {
     for (int i = 0; i < v_addresses.size(); i++) {
         temp_src = string_charStar(v_addresses[i]);
         temp_dest = string_charStar(v_addresses_fileName[i]);
-        copyFile(src+v_addresses[i], dest+temp, w_manifest, 0);
+        copyFile(src+temp_src, dest+temp_dest, w_manifest, 0);
         //copyFile_noManifest(v_addresses[i], src + dest);
         //writeFile(manifest, v_addresses);
     }
