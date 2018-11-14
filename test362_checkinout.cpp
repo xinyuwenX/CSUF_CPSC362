@@ -29,7 +29,7 @@
 
 using namespace std;
 
-void copyFile(char * src, char * dest, char * manifest, int cut);
+void copyFile(char * src, char * dest, char * manifest, int cut, int flag);
 int copyDir(const char * p_src, const char * p_dest, char * manifest, int cut);
 string getArtIDFileName(char fileName[]);
 void writeFile(char file_name[], const char *message);
@@ -40,7 +40,7 @@ void splitString(vector<string> &v_str, string str, char ch);
 void addLabel(char filename[]);
 vector<string> find_addresses_artID(string file_name);
 vector<string> find_addresses_fileName(vector<string> v_addresses);
-void check_out(char* src, char * dest, char* r_manifest, char * w_manifest);
+void check_out(char* src, char * dest, char* r_manifest, char * w_manifest, int cut);
 int num_of_manifest;
 
 int main(int argc, char *argv[]) {
@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
 	//status = copyDir(src, dest);
 	//status = copyDir("C:\\Users\\yintaowang\\test\\src", "C:\\Users\\yintaowang\\test\\repo");
 	//test:
-	const char *command_line = "LABEL";
+	const char *command_line = "CHECKOUT";
 	//get arg
 	if ((command_line == "CREATE") || (command_line=="CHECKIN")){
 		//const char *src = argv[2];
@@ -74,13 +74,12 @@ int main(int argc, char *argv[]) {
 	char dest[260] = "C:\\Users\\yintaowang\\test\\repo";
 	char r_manifest[260] = "C:\\Users\\yintaowang\\test\\repo\\manifest_17.txt";*/
 
-	const char *src = "C:\\Users\\yintaowang\\test\\src";
-	const char *dest = "C:\\Users\\yintaowang\\test\\repo";
+	const char *src = "C:\\Users\\yintaowang\\test\\repo";
+	const char *dest = "C:\\Users\\yintaowang\\test\\bob";
 	const char *r_manifest = "C:\\Users\\yintaowang\\test\\repo\\manifest_17.txt";
 
 
 	//get manifest dir
-	//char manifest_path[260];
 	if (command_line == "CHECKOUT") {
 		strcpy(manifest_path, src);
 	}
@@ -133,7 +132,7 @@ int main(int argc, char *argv[]) {
 		writeFile(manifest, message);
 		writeFile(manifest, ctime(&now));
 		//check out
-		check_out(strdup(src), strdup(dest), strdup(r_manifest), manifest);
+		check_out(_strdup(src), _strdup(dest), _strdup(r_manifest), manifest, strlen(src));
 	}
 	else if (command_line == "LABEL") {
 		//labeling
@@ -147,7 +146,7 @@ int main(int argc, char *argv[]) {
 
 	//display execution result
 	if (status == 0) {
-		cout << command_line << " successfully." << endl << endl;//update
+		cout << command_line << " successfully." << endl << endl;
 	}
 	else {
 		cout << command_line << " Failed." << endl << endl;
@@ -221,7 +220,7 @@ void getManifestName(const string cmd, char manifest_name[]) {
 }
 
 //copy source file contents to artifact
-void copyFile(char * src_file, char * dest_file, char * manifest, int cut) {
+void copyFile(char * src_file, char * dest_file, char * manifest, int cut, int flag) {
 
 	const int buff_size = 16384;
 	char buffer[buff_size];
@@ -238,8 +237,14 @@ void copyFile(char * src_file, char * dest_file, char * manifest, int cut) {
 
 	fclose(in_file);
 	fclose(out_file);
+	if (flag == 1) {
+		//write manifest file CHECKOUT
+		writeFile(manifest, src_file + cut);
+	}
+	else {
 	//write manifest file
 	writeFile(manifest, dest_file + cut);
+	}
 }
 
 //create repository
@@ -283,7 +288,7 @@ int copyDir(const char * p_src, const char * p_dest, char * manifest, int cut) {
 				dest_file_name_str = dest_file_name_str + "\\" + artId_str;
 				char *dest_file_name_char = const_cast<char *>(dest_file_name_str.c_str());
 				//create the artifact of the source file
-				copyFile(src_file_name, dest_file_name_char, manifest, cut);
+				copyFile(src_file_name, dest_file_name_char, manifest, cut, 0);
 
 			}
 			else if (strcmp(fileInfo.name, ".") != 0 && strcmp(fileInfo.name, "..") != 0) {
@@ -483,31 +488,31 @@ string label_to_manifest(string label) {
     return manifest;
 }
 
-void check_out(char* src, char * dest, char* r_manifest, char * w_manifest) {
-    vector<string> v_addresses = find_addresses_artID(r_manifest);
-    vector<string> v_addresses_fileName = find_addresses_fileName(v_addresses);
-    vector<string> v_addresses_folder = find_addresses_fileName(v_addresses_fileName);
-    vector<string> v_addresses_folder_no_repeat = eliminate_repeat(v_addresses_folder);
-    char* temp_src;
-    char* temp_dest;
-    string cmd;
-    
-    
-    for(int i = 0; i < v_addresses_folder_no_repeat.size(); i++) {
-        cmd = "mkdir ";
-        string temp(dest);
-        cmd += temp;
-        cmd += v_addresses_folder_no_repeat[i];
-        system(cmd);
-    }
-    
-    for (int i = 0; i < v_addresses.size()-1; i++) {
-        temp_src = &v_addresses[i][0u];
-        temp_dest = &v_addresses_fileName[i][0u];
-        strcat(src, temp_src);
-        strcat(dest, temp_dest);
-        copyFile(src, dest, w_manifest, 0);
-        //copyFile_noManifest(v_addresses[i], src + dest);
-        //writeFile(manifest, v_addresses);
-    }
+void check_out(char* src, char * dest, char* r_manifest, char * w_manifest, int cut) {
+	vector<string> v_addresses = find_addresses(r_manifest);
+	vector<string> v_addresses_fileName = find_addresses_fileName(v_addresses);
+	vector<string> v_addresses_folder = find_addresses_fileName(v_addresses_fileName);
+	vector<string> v_addresses_folder_no_repeat = eliminate_repeat(v_addresses_folder);
+	char* temp_src;
+	char* temp_dest;
+	string cmd;
+
+	for (int i = 0; i < v_addresses_folder_no_repeat.size(); i++) {
+		cout << v_addresses_folder_no_repeat[i] << endl;
+		cmd = "mkdir ";
+		string temp(dest);
+		cmd += temp;
+		cmd += v_addresses_folder_no_repeat[i];
+		system(cmd.c_str());
+	}
+
+	for (int i = 0; i < v_addresses.size() - 1; i++) {
+		temp_src = &v_addresses[i][0u];
+		temp_dest = &v_addresses_fileName[i][0u];
+		char *src_temp = _strdup(src);
+		char *dest_temp = _strdup(dest);
+		strcat(src_temp, temp_src);
+		strcat(dest_temp, temp_dest);
+		copyFile(src_temp, dest_temp, w_manifest, cut, 1);
+	}
 }
