@@ -46,11 +46,7 @@ int num_of_manifest;
 int main(int argc, char *argv[]) {
 
 	int status = 0;
-	char manifest[260], message[260], manifest_path[260];
-	//const char * message;
-	//const char *command_line = argv[1];
-	//const char *src = argv[2];
-	//const char *dest = argv[3];
+	char manifest[260], message[260], manifest_path[260], manifest_name[260];
 	//status = copyDir(src, dest);
 	//status = copyDir("C:\\Users\\yintaowang\\test\\src", "C:\\Users\\yintaowang\\test\\repo");
 	//test:
@@ -70,41 +66,47 @@ int main(int argc, char *argv[]) {
 		//const char *target = argv[3];
 	}
 	//get arg end
+
+	//TEST
 	/*char src[260] = "C:\\Users\\yintaowang\\test\\src";
 	char dest[260] = "C:\\Users\\yintaowang\\test\\repo";
 	char r_manifest[260] = "C:\\Users\\yintaowang\\test\\repo\\manifest_17.txt";*/
 
-	const char *src = "C:\\Users\\yintaowang\\test\\repo";
-	const char *dest = "C:\\Users\\yintaowang\\test\\bob";
+	const char *src = "C:\\Users\\yintaowang\\test\\src";
+	const char *dest = "C:\\Users\\yintaowang\\test\\repo";
 	const char *r_manifest = "C:\\Users\\yintaowang\\test\\repo\\manifest_17.txt";
 
 
-	//get manifest dir
-	if (command_line == "CHECKOUT") {
-		strcpy(manifest_path, src);
-	}
-	else {
-		strcpy(manifest_path, dest);
+	if ((command_line == "CREATE") || (command_line == "CHECKIN") || (command_line == "CHECKOUT")) {
+		//get manifest path
+		if (command_line == "CHECKOUT") {
+			strcpy(manifest_path, src);
+		}
+		else {
+			strcpy(manifest_path, dest);
+		}
+
+		//manifest file name
+		string manifest_p = "dir ";
+		manifest_p.append(manifest_path);
+		manifest_p.append("\\manifest*.txt /b /a-d | find /v /c \"&#@\"");
+
+		getManifestName(manifest_p, manifest_name);
+		strcpy(manifest, manifest_path);
+		strcat(manifest, "\\");
+		strcat(manifest, manifest_name);
+		strcpy(message, command_line);
+		strcat(message, " ");
+		strcat(message, src);
+		strcat(message, " ");
+		strcat(message, dest);
 	}
 
-	//manifest file name
-	string manifest_p = "dir ";
-	manifest_p.append(manifest_path);
-	manifest_p.append("\\manifest*.txt /b /a-d | find /v /c \"&#@\"");
-
-	char manifest_name[260];
-	getManifestName(manifest_p, manifest_name);
-	strcpy(manifest, manifest_path);
-	strcat(manifest, "\\");
-	strcat(manifest, manifest_name);
-	strcpy(message, command_line);
-	strcat(message, " ");
-	strcat(message, src);
-	strcat(message, " ");
-	strcat(message, dest);
+	//get current time
 	time_t now = time(0);
 
 	//label file name
+	//TODO where is label.txt???
 	char label_file[260];
 	strcpy(label_file, dest);
 	strcat(label_file, "\\label.txt");
@@ -470,6 +472,23 @@ vector<string> find_addresses_fileName(vector<string> v_addresses) {
         }
     }
     return all_addresses;
+}
+
+vector<string> eliminate_repeat(vector<string> v_addresses) {
+	vector<string> addresses_no_repeat;
+	bool repeat;
+	for (int i = 0; i < v_addresses.size(); i++) {
+		repeat = false;
+		for (int j = 0; j < addresses_no_repeat.size(); j++) {
+			if (v_addresses[i] == addresses_no_repeat[j]) {
+				repeat = true;
+				break;
+			}
+		}
+		if (!repeat)
+			addresses_no_repeat.push_back(v_addresses[i]);
+	}
+	return addresses_no_repeat;
 }
 
 //string to char*
