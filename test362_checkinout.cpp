@@ -1,8 +1,8 @@
 /*
- project_362_01.cpp
+ project_362_02.cpp
  ============================= CPSC 362 Project info ===============================
- Project #2 (checkout checkin labeling)
- Due date: 09/28/2018
+ Project #2 (Check-Out & Check-In & Labeling)
+ Due date: 11/17/2018
  Group members:Xinyu Wen, Xianghui Huang, Yintao Wang
  Email: xinyuwen@csu.fullerton.edu, jerryhuang6666@gmail.com, wyt@csu.fullerton.edu
  Class meeting time: Monday & Wednesday 15:00-16:50
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
 	//test:
 	const char *command_line = "CHECKOUT";
 	//get arg
-	if ((command_line == "CREATE") || (command_line=="CHECKIN")){
+	if ((command_line == "CREATE") || (command_line == "CHECKIN")) {
 		//const char *src = argv[2];
 		//const char *dest = argv[3];
 	}
@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
 		//const char *dest = argv[3];
 		//const char *r_manifest = argv[4];
 	}
-	else if (command_line=="LABEL") {
+	else if (command_line == "LABEL") {
 		//const char *label = argv[2];
 		//const char *target = argv[3];
 	}
