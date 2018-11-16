@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
 	
 	//test:
 	const char *command_line = "CREATE";
-	//const char *command_line = "CHECHIN";
+	//const char *command_line = "CHECKIN";
 	//const char *command_line = "CHECKOUT";
 	//const char *command_line = "LABEL";
 	//get arg
