@@ -49,8 +49,13 @@ int main(int argc, char *argv[]) {
 	char manifest[260], message[260], manifest_path[260], manifest_name[260];
 	//status = copyDir(src, dest);
 	//status = copyDir("C:\\Users\\yintaowang\\test\\src", "C:\\Users\\yintaowang\\test\\repo");
+	
 	//test:
-	const char *command_line = "CHECKOUT";
+	const char *command_line = "CREATE";
+	//const char *command_line = "CHECKIN";
+	//const char *command_line = "CHECKOUT";
+	//const char *command_line = "LABEL";
+	
 	//get arg
 	if ((command_line == "CREATE") || (command_line == "CHECKIN")) {
 		//const char *src = argv[2];
