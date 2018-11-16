@@ -54,10 +54,10 @@ int main(int argc, char *argv[]) {
 	//status = copyDir("C:\\Users\\yintaowang\\test\\src", "C:\\Users\\yintaowang\\test\\repo");
 	
 	//test:
-	const char *command_line = "CREATE";
+	//const char *command_line = "CREATE";
 	//const char *command_line = "CHECKIN";
 	//const char *command_line = "CHECKOUT";
-	//const char *command_line = "LABEL";
+	const char *command_line = "LABEL";
 	//get arg
 	if ((command_line == "CREATE") || (command_line == "CHECKIN")) {
 		//const char *src = argv[2];
@@ -83,7 +83,7 @@ int main(int argc, char *argv[]) {
 	const char *dest = "C:\\Users\\Xinyu\\Desktop\\repo";//for CREATE, CHECKIN
 	//const char *src = "C:\\Users\\Xinyu\\Desktop\\repo";//for CHECKOUT
 	//const char *dest = "C:\\Users\\Xinyu\\Desktop\\checkout";//for CHECKOUT
-	const char *r_manifest = "C:\\Users\\Xinyu\\Desktop\\repo\\manifest_1.txt";
+	const char *r_manifest = "C:\\Users\\Xinyu\\Desktop\\repo\\manifest_2.txt";
 	
 	
 
