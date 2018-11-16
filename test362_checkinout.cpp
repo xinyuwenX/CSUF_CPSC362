@@ -33,7 +33,8 @@ void copyFile(char * src, char * dest, char * manifest, int cut, int flag);
 int copyDir(const char * p_src, const char * p_dest, char * manifest, int cut);
 string getArtIDFileName(char fileName[]);
 void writeFile(char file_name[], const char *message);
-void getManifestName(const string cmd, char manifest_name[]);
+void getManifestName(char manifest_name[]);
+string getCurrentDateTime();
 bool mapToFile(char filename[], map<string, string> &fileMap);
 bool fileToMap(char filename[], map<string, string> &fileMap);
 void splitString(vector<string> &v_str, string str, char ch);
@@ -92,11 +93,8 @@ int main(int argc, char *argv[]) {
 		}
 
 		//manifest file name
-		string manifest_p = "dir ";
-		manifest_p.append(manifest_path);
-		manifest_p.append("\\manifest*.txt /b /a-d | find /v /c \"&#@\"");
-
-		getManifestName(manifest_p, manifest_name);
+		getManifestName(manifest_name);
+		//manifest path
 		strcpy(manifest, manifest_path);
 		strcat(manifest, "\\");
 		strcat(manifest, manifest_name);
@@ -208,22 +206,17 @@ void writeFile(char file_name[], const char *message) {
 	OutFile.close();
 }
 
-void getManifestName(const string cmd, char manifest_name[]) {
-
-	FILE *crs = _popen(cmd.c_str(), "r");
-	char result[1024] = "0";
-	fread(result, sizeof(char), sizeof(result), crs);
-	if (NULL != crs) {
-		fclose(crs);
-		crs == NULL;
-	}
-	int res = stoi(result, nullptr, 10);
-	res += 1;
-	num_of_manifest = res;
-	string temp = "manifest_";
-	temp.append(to_string(res));
-	temp.append(".txt");
+void getManifestName(char manifest_name[]) {
+	string temp = "manifest_" + getCurrentDateTime() + ".txt";
 	strcpy(manifest_name, temp.c_str());
+}
+
+string getCurrentDateTime() {
+	time_t now = time(0);
+	tm *ltm = localtime(&now);
+	char temp[16];
+	strftime(temp, sizeof(temp), "%Y%m%d_%H%M%S", localtime(&now));
+	return temp;
 }
 
 //copy source file contents to artifact
