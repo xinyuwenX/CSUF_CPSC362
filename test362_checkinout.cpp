@@ -507,19 +507,19 @@ vector<string> eliminate_repeat(vector<string> v_addresses) {
 }
 
 //string to char*
-char* string_charStar(string s) {
-    char* c;
-    c = (char *)malloc((s.length()+1)*sizeof(char));
-    s.copy(c,s.length(),0);
-    return c;
+char* string_to_char(string s) {
+	char* c;
+	c = (char *)malloc((s.length() + 1) * sizeof(char));
+	s.copy(c, s.length(), 0);
+	return c;
 }
 
 string label_to_manifest(string label) {
-    map<string, string> fileMap;
-    char* fileName = string_charStar("Label.txt");
-    fileToMap(fileName, fileMap);
-    string manifest = fileMap["label"];
-    return manifest;
+	map<string, string> fileMap;
+	char* fileName = string_to_char("Label.txt");
+	fileToMap(fileName, fileMap);
+	string manifest = fileMap["label"];
+	return manifest;
 }
 
 void check_out(char* src, char * dest, char* r_manifest, char * w_manifest, int cut) {
