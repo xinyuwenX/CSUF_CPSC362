@@ -8,7 +8,9 @@
  Class meeting time: Monday & Wednesday 15:00-16:50
  ===================================================================================
  */
+//#include "pch.h"
 #define _CRT_SECURE_NO_DEPRECATE
+//#define _CRT_SECURE_NO_WARNINGS
 
 #include <iostream>
 #include <io.h>
@@ -50,10 +52,10 @@ int main(int argc, char *argv[]) {
 	//status = copyDir(src, dest);
 	//status = copyDir("C:\\Users\\yintaowang\\test\\src", "C:\\Users\\yintaowang\\test\\repo");
 	
-	//test:
-	const char *command_line = "CREATE";
+	//command_line
+	//const char *command_line = "CREATE";
 	//const char *command_line = "CHECKIN";
-	//const char *command_line = "CHECKOUT";
+	const char *command_line = "CHECKOUT";
 	//const char *command_line = "LABEL";
 	
 	//get arg
@@ -80,6 +82,14 @@ int main(int argc, char *argv[]) {
 	const char *src = "C:\\Users\\yintaowang\\test\\src";
 	const char *dest = "C:\\Users\\yintaowang\\test\\repo";
 	const char *r_manifest = "C:\\Users\\yintaowang\\test\\repo\\manifest_17.txt";
+	
+	//CREATE & CHECKIN
+	//const char *src = "C:\\Users\\Xinyu\\Desktop\\src";
+	//const char *dest = "C:\\Users\\Xinyu\\Desktop\\repo";
+	//CHECKOUT
+	//const char *src = "C:\\Users\\Xinyu\\Desktop\\repo";
+	//const char *dest = "C:\\Users\\Xinyu\\Desktop\\checkout";
+	//const char *r_manifest = "C:\\Users\\Xinyu\\Desktop\\repo\\manifest_13.txt";
 
 
 	if ((command_line == "CREATE") || (command_line == "CHECKIN") || (command_line == "CHECKOUT")) {
