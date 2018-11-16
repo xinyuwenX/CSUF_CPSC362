@@ -53,11 +53,12 @@ int main(int argc, char *argv[]) {
 	//status = copyDir(src, dest);
 	//status = copyDir("C:\\Users\\yintaowang\\test\\src", "C:\\Users\\yintaowang\\test\\repo");
 	
-	//test:
+	//command_line
 	//const char *command_line = "CREATE";
 	//const char *command_line = "CHECKIN";
-	//const char *command_line = "CHECKOUT";
-	const char *command_line = "LABEL";
+	const char *command_line = "CHECKOUT";
+	//const char *command_line = "LABEL";
+
 	//get arg
 	if ((command_line == "CREATE") || (command_line == "CHECKIN")) {
 		//const char *src = argv[2];
@@ -79,11 +80,13 @@ int main(int argc, char *argv[]) {
 	char dest[260] = "C:\\Users\\yintaowang\\test\\repo";
 	char r_manifest[260] = "C:\\Users\\yintaowang\\test\\repo\\manifest_17.txt";*/
 
-	const char *src = "C:\\Users\\Xinyu\\Desktop\\src";//for CREATE, CHECKIN
-	const char *dest = "C:\\Users\\Xinyu\\Desktop\\repo";//for CREATE, CHECKIN
-	//const char *src = "C:\\Users\\Xinyu\\Desktop\\repo";//for CHECKOUT
-	//const char *dest = "C:\\Users\\Xinyu\\Desktop\\checkout";//for CHECKOUT
-	const char *r_manifest = "C:\\Users\\Xinyu\\Desktop\\repo\\manifest_2.txt";
+	//CREATE & CHECKIN
+	//const char *src = "C:\\Users\\Xinyu\\Downloads\\362_test\\src";
+	//const char *dest = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo";
+	//CHECKOUT
+	const char *src = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo";
+	const char *dest = "C:\\Users\\Xinyu\\Downloads\\362_test\\checkout";
+	const char *r_manifest = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo\\manifest_3.txt";
 	
 	
 
@@ -503,7 +506,7 @@ vector<string> eliminate_repeat(vector<string> v_addresses) {
 }
 
 //string to char*
-char* string_charStar(string s) {
+char* string_to_char(string s) {
 	char* c;
 	c = (char *)malloc((s.length() + 1) * sizeof(char));
 	s.copy(c, s.length(), 0);
@@ -512,7 +515,7 @@ char* string_charStar(string s) {
 
 string label_to_manifest(string label) {
 	map<string, string> fileMap;
-	char* fileName = string_charStar("Label.txt");
+	char* fileName = string_to_char("Label.txt");
 	fileToMap(fileName, fileMap);
 	string manifest = fileMap["label"];
 	return manifest;
