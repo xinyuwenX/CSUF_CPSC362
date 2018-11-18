@@ -54,9 +54,9 @@ int main(int argc, char *argv[]) {
 	//status = copyDir("C:\\Users\\yintaowang\\test\\src", "C:\\Users\\yintaowang\\test\\repo");
 
 	//command_line
-	//const char *command_line = "CREATE";
+	const char *command_line = "CREATE";
 	//const char *command_line = "CHECKIN";
-	const char *command_line = "CHECKOUT";
+	//const char *command_line = "CHECKOUT";
 	//const char *command_line = "LABEL";
 
 	//get arg
@@ -81,13 +81,13 @@ int main(int argc, char *argv[]) {
 	char r_manifest[260] = "C:\\Users\\yintaowang\\test\\repo\\manifest_17.txt";*/
 
 	//CREATE & CHECKIN
-	//const char *src = "C:\\Users\\Xinyu\\Downloads\\362_test\\src";
-	//const char *dest = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo";
+	const char *src = "C:\\Users\\Xinyu\\Downloads\\362_test\\src";
+	const char *dest = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo";
 	//CHECKOUT
-	const char *src = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo";
-	const char *dest = "C:\\Users\\Xinyu\\Downloads\\362_test\\checkout";
-	//const char *r_manifest = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo\\manifest_1.txt";
-	const char *r_manifest = "label_test";
+	//const char *src = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo";
+	//const char *dest = "C:\\Users\\Xinyu\\Downloads\\362_test\\checkout";
+	const char *r_manifest = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo\\manifest_1.txt";
+	//const char *r_manifest = "label_test";
 
 
 
