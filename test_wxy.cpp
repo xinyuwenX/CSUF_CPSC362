@@ -8,7 +8,7 @@
  Class meeting time: Monday & Wednesday 15:00-16:50
  ===================================================================================
  */
-#include "pch.h"
+//#include "pch.h"
 #define _CRT_SECURE_NO_DEPRECATE
 #define _CRT_SECURE_NO_WARNINGS
 
