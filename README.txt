@@ -1,4 +1,4 @@
-CPSC362--01
+CPSC362--02
 PROJECT 2 VCSPROJCET----Check In& Check Out& Label
 
 Team Name: OVO
