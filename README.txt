@@ -27,4 +27,5 @@ Check_out
 
 
 BUGS & PROBLEMS:
-Another issue is that our code can compile and work on the Visual Studio but when we test it in Linux Environment or the terminal of the Mac, it showed us some errors.
+1.Our code can compile and work on the Visual Studio but when we test it in Linux Environment or the terminal of the Mac, it showed us some errors.
+2.Check_out function can only run under "debug x64" mode, or there is an error.
