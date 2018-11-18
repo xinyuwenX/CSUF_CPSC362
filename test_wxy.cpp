@@ -1,8 +1,8 @@
 /*
- project_362_01.cpp
+ project_362_02.cpp
  ============================= CPSC 362 Project info ===============================
- Project #2 (checkout checkin labeling)
- Due date: 09/28/2018
+ Project #2 (Check-Out & Check-In & Labeling)
+ Due date: 11/17/2018
  Group members:Xinyu Wen, Xianghui Huang, Yintao Wang
  Email: xinyuwen@csu.fullerton.edu, jerryhuang6666@gmail.com, wyt@csu.fullerton.edu
  Class meeting time: Monday & Wednesday 15:00-16:50
