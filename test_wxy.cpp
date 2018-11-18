@@ -40,7 +40,7 @@ void getManifestName(const string cmd, char manifest_name[]);
 bool mapToFile(char filename[], map<string, string> &fileMap);
 bool fileToMap(char filename[], map<string, string> &fileMap);
 void splitString(vector<string> &v_str, string str, char ch);
-void addLabel(char filename[]);
+void addLabel(char filename[], char destination[]);
 vector<string> find_addresses(string file_name);
 vector<string> find_addresses_fileName(vector<string> v_addresses);
 void check_out(char* src, char * dest, char* r_manifest, char * w_manifest, int cut);
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
 	char manifest[260], message[260], manifest_path[260], manifest_name[260];
 	//status = copyDir(src, dest);
 	//status = copyDir("C:\\Users\\yintaowang\\test\\src", "C:\\Users\\yintaowang\\test\\repo");
-	
+
 	//command_line
 	//const char *command_line = "CREATE";
 	//const char *command_line = "CHECKIN";
@@ -86,9 +86,10 @@ int main(int argc, char *argv[]) {
 	//CHECKOUT
 	const char *src = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo";
 	const char *dest = "C:\\Users\\Xinyu\\Downloads\\362_test\\checkout";
-	const char *r_manifest = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo\\manifest_3.txt";
-	
-	
+	//const char *r_manifest = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo\\manifest_1.txt";
+	const char *r_manifest = "label_test";
+
+
 
 
 	if ((command_line == "CREATE") || (command_line == "CHECKIN") || (command_line == "CHECKOUT")) {
@@ -124,7 +125,6 @@ int main(int argc, char *argv[]) {
 	char label_file[260];
 	strcpy(label_file, dest);
 	strcat(label_file, "\\label.txt");
-
 	string label_default = "";
 
 	if (command_line == "CREATE") {
@@ -152,7 +152,9 @@ int main(int argc, char *argv[]) {
 	}
 	else if (command_line == "LABEL") {
 		//labeling
-		addLabel(label_file);
+		char destination[260];
+		strcpy(destination, dest);
+		addLabel(label_file, destination);
 	}
 	else {
 		cout << "input command is invalid!!!" << endl;
@@ -171,7 +173,14 @@ int main(int argc, char *argv[]) {
 	return 0;
 }
 
-void addLabel(char filename[]) {
+void addLabel(char filename[], char destination[]) {
+
+	char trash[260];
+	string manifest_p = "dir ";
+	manifest_p.append(destination);
+	manifest_p.append("\\manifest*.txt /b /a-d | find /v /c \"&#@\"");
+	getManifestName(manifest_p, trash);
+
 
 	string label, manifest_file;
 	string actual_filename;
@@ -193,7 +202,6 @@ void addLabel(char filename[]) {
 		actual_filename = manifest_file;
 	else
 		actual_filename = itr->second;
-
 
 	for (int i = 1; i < num_of_manifest; i++) {
 		string temp = "manifest_" + to_string(i) + ".txt";
@@ -398,7 +406,6 @@ bool fileToMap(char filename[], map<string, string> &fileMap)  //Read Map
 	vector<string> v_str;
 	while (ifile >> line)
 	{
-		cout << "line: " << line << endl;
 		splitString(v_str, line, '|');
 
 		for (vector<string>::iterator iter = v_str.begin();; ++iter)        //First vector element is the key.
@@ -513,15 +520,33 @@ char* string_to_char(string s) {
 	return c;
 }
 
-string label_to_manifest(string label) {
-	map<string, string> fileMap;
-	char* fileName = string_to_char("Label.txt");
-	fileToMap(fileName, fileMap);
-	string manifest = fileMap["label"];
-	return manifest;
+
+
+char* label_to_manifest(char* label, char* src) {
+	char* label_address = src;
+	strcat(label_address, "\\label.txt");
+	map <string, string> manifest_label_map;
+	fileToMap(label_address, manifest_label_map);
+	map <string, string> ::iterator itr;
+	itr = manifest_label_map.find(label);
+	string actual_manifest;
+	actual_manifest = itr->second;
+	return string_to_char(actual_manifest);
 }
 
 void check_out(char* src, char * dest, char* r_manifest, char * w_manifest, int cut) {
+	bool is_label = true;
+	for (size_t i = 0; i < strlen(r_manifest); i++) {
+		if (r_manifest[i] == '\\') {
+			is_label = false;
+			break;
+		}
+	}
+	if (is_label) {
+		r_manifest = src;
+		strcat(r_manifest, "\\");
+		strcat(r_manifest, label_to_manifest(r_manifest, src));
+	}
 	vector<string> v_addresses = find_addresses(r_manifest);
 	vector<string> v_addresses_fileName = find_addresses_fileName(v_addresses);
 	vector<string> v_addresses_folder = find_addresses_fileName(v_addresses_fileName);
