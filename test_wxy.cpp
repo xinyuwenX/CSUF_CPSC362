@@ -8,7 +8,7 @@
  Class meeting time: Monday & Wednesday 15:00-16:50
  ===================================================================================
  */
-//#include "pch.h"
+#include "pch.h"
 #define _CRT_SECURE_NO_DEPRECATE
 #define _CRT_SECURE_NO_WARNINGS
 
@@ -54,9 +54,9 @@ int main(int argc, char *argv[]) {
 	//status = copyDir("C:\\Users\\yintaowang\\test\\src", "C:\\Users\\yintaowang\\test\\repo");
 
 	//command_line
-	const char *command_line = "CREATE";
+	//const char *command_line = "CREATE";
 	//const char *command_line = "CHECKIN";
-	//const char *command_line = "CHECKOUT";
+	const char *command_line = "CHECKOUT";
 	//const char *command_line = "LABEL";
 
 	//get arg
@@ -81,12 +81,12 @@ int main(int argc, char *argv[]) {
 	char r_manifest[260] = "C:\\Users\\yintaowang\\test\\repo\\manifest_17.txt";*/
 
 	//CREATE & CHECKIN
-	const char *src = "C:\\Users\\Xinyu\\Downloads\\362_test\\src";
-	const char *dest = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo";
+	//const char *src = "C:\\Users\\Xinyu\\Downloads\\362_test\\src";
+	//const char *dest = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo";
 	//CHECKOUT
-	//const char *src = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo";
-	//const char *dest = "C:\\Users\\Xinyu\\Downloads\\362_test\\checkout";
-	const char *r_manifest = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo\\manifest_1.txt";
+	const char *src = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo";
+	const char *dest = "C:\\Users\\Xinyu\\Downloads\\362_test\\checkout";
+	const char *r_manifest = "manifest_1.txt";
 	//const char *r_manifest = "label_test";
 
 
@@ -522,32 +522,13 @@ char* string_to_char(string s) {
 
 
 
-char* label_to_manifest(char* label, char* src) {
-	char* label_address = src;
-	strcat(label_address, "\\label.txt");
-	map <string, string> manifest_label_map;
-	fileToMap(label_address, manifest_label_map);
-	map <string, string> ::iterator itr;
-	itr = manifest_label_map.find(label);
-	string actual_manifest;
-	actual_manifest = itr->second;
-	return string_to_char(actual_manifest);
-}
-
 void check_out(char* src, char * dest, char* r_manifest, char * w_manifest, int cut) {
-	bool is_label = true;
-	for (size_t i = 0; i < strlen(r_manifest); i++) {
-		if (r_manifest[i] == '\\') {
-			is_label = false;
-			break;
-		}
-	}
-	if (is_label) {
-		r_manifest = src;
-		strcat(r_manifest, "\\");
-		strcat(r_manifest, label_to_manifest(r_manifest, src));
-	}
-	vector<string> v_addresses = find_addresses(r_manifest);
+	//r_manifest = label_to_manifest(r_manifest);
+	char *src_temp = _strdup(src);
+	char *man_temp = _strdup(r_manifest);
+	strcat(src_temp, "\\");
+	strcat(src_temp, man_temp);
+	vector<string> v_addresses = find_addresses(src_temp);
 	vector<string> v_addresses_fileName = find_addresses_fileName(v_addresses);
 	vector<string> v_addresses_folder = find_addresses_fileName(v_addresses_fileName);
 	vector<string> v_addresses_folder_no_repeat = eliminate_repeat(v_addresses_folder);
