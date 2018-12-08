@@ -115,6 +115,11 @@ int main(int argc, char *argv[]) {
 		strcat(message, src);
 		strcat(message, " ");
 		strcat(message, dest);
+		
+		if (command_line == "CHECKOUT") {
+			strcat(message, " ");
+			strcat(message, r_manifest);
+		}
 	}
 
 	//get current time
