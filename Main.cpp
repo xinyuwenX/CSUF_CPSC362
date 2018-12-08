@@ -8,7 +8,6 @@
  Class meeting time: Monday & Wednesday 15:00-16:50
  ===================================================================================
  */
-#include "pch.h"
 #define _CRT_SECURE_NO_DEPRECATE
 #define _CRT_SECURE_NO_WARNINGS
 
@@ -517,6 +516,7 @@ vector<string> eliminate_repeat(vector<string> v_addresses) {
 	return addresses_no_repeat;
 }
 
+/*
 //string to char*
 char* string_to_char(string s) {
 	char* c;
@@ -524,7 +524,7 @@ char* string_to_char(string s) {
 	s.copy(c, s.length(), 0);
 	return c;
 }
-
+*/
 
 
 void check_out(char* src, char * dest, char* r_manifest, char * w_manifest, int cut) {
