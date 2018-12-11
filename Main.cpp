@@ -43,6 +43,8 @@ void addLabel(char filename[], char destination[]);
 vector<string> find_addresses(string file_name);
 vector<string> find_addresses_fileName(vector<string> v_addresses);
 void check_out(char* src, char * dest, char* r_manifest, char * w_manifest, int cut);
+char* string_to_char(string s);
+char* label_to_manifest(char *label);
 int num_of_manifest;
 
 int main(int argc, char *argv[]) {
@@ -114,7 +116,7 @@ int main(int argc, char *argv[]) {
 		strcat(message, src);
 		strcat(message, " ");
 		strcat(message, dest);
-		
+
 		if (command_line == "CHECKOUT") {
 			strcat(message, " ");
 			strcat(message, r_manifest);
@@ -516,27 +518,35 @@ vector<string> eliminate_repeat(vector<string> v_addresses) {
 	return addresses_no_repeat;
 }
 
-void label_to_manifest(char *label) {
-    //if input is label, return manifest
-    //else label is manifest
-    string actual_filename = "";
-    map <string, string> manifest_label_map;  //<label, manifest filename>
-    //check if input is label
-    map <string, string> ::iterator itr;
-    itr = manifest_label_map.find(label);
-    if (itr == manifest_label_map.end())
-        // if input is not label
-        actual_filename = label;
-    else
-        // if input is key, return value.
-        actual_filename = itr->second;
-    
-    return actual_filename;
+char* label_to_manifest(char *label) {
+	//if input is label, return manifest
+	//else label is manifest
+	string actual_filename = "";
+	map <string, string> manifest_label_map;  //<label, manifest filename>
+	//check if input is label
+	map <string, string> ::iterator itr;
+	itr = manifest_label_map.find(label);
+	if (itr == manifest_label_map.end())
+		// if input is not label
+		actual_filename = label;
+	else
+		// if input is key, return value.
+		actual_filename = itr->second;
+
+	return string_to_char(actual_filename);
 }
+
+ //string to char*
+ char* string_to_char(string s) {
+	char* c;
+	c = (char *)malloc((s.length() + 1) * sizeof(char));
+	s.copy(c, s.length(), 0);
+	return c;
+ }
 
 
 void check_out(char* src, char * dest, char* r_manifest, char * w_manifest, int cut) {
-	//r_manifest = label_to_manifest(r_manifest);
+	r_manifest = label_to_manifest(r_manifest);
 	char *src_temp = _strdup(src);
 	char *man_temp = _strdup(r_manifest);
 	strcat(src_temp, "\\");
