@@ -81,14 +81,14 @@ int main(int argc, char *argv[]) {
 	char dest[260] = "C:\\Users\\yintaowang\\test\\repo";
 	char r_manifest[260] = "C:\\Users\\yintaowang\\test\\repo\\manifest_17.txt";*/
 
-	//CREATE & CHECKIN
+	//CREATE & CHECKIN & LABEL
 	//const char *src = "C:\\Users\\Xinyu\\Downloads\\362_test\\src";
 	//const char *dest = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo";
 	//CHECKOUT
 	const char *src = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo";
 	const char *dest = "C:\\Users\\Xinyu\\Downloads\\362_test\\checkout";
-	const char *r_manifest = "manifest_1.txt";
-	//const char *r_manifest = "label_test";
+	//const char *r_manifest = "manifest_1.txt";
+	const char *r_manifest = "label_test";
 
 
 
@@ -528,25 +528,25 @@ char* label_to_manifest(char *label) {
 	itr = manifest_label_map.find(label);
 	if (itr == manifest_label_map.end())
 		// if input is not label
-		actual_filename = label;
-	else
-		// if input is key, return value.
-		actual_filename = itr->second;
+		return label;
+	// if input is key, return value.
+	actual_filename = itr->second;
 
 	return string_to_char(actual_filename);
 }
 
  //string to char*
- char* string_to_char(string s) {
-	char* c;
-	c = (char *)malloc((s.length() + 1) * sizeof(char));
-	s.copy(c, s.length(), 0);
+char* string_to_char(string s) {
+	char c[260];
+	for (int i = 0; i < s.size(); i++)
+		c[i] = s[i];
 	return c;
- }
+}
 
 
 void check_out(char* src, char * dest, char* r_manifest, char * w_manifest, int cut) {
 	r_manifest = label_to_manifest(r_manifest);
+	cout << "r_manifest: " << r_manifest << endl;
 	char *src_temp = _strdup(src);
 	char *man_temp = _strdup(r_manifest);
 	strcat(src_temp, "\\");
