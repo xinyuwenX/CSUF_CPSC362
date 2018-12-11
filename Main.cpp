@@ -516,15 +516,23 @@ vector<string> eliminate_repeat(vector<string> v_addresses) {
 	return addresses_no_repeat;
 }
 
-/*
-//string to char*
-char* string_to_char(string s) {
-	char* c;
-	c = (char *)malloc((s.length() + 1) * sizeof(char));
-	s.copy(c, s.length(), 0);
-	return c;
+void label_to_manifest(char *label) {
+    //if input is label, return manifest
+    //else label is manifest
+    string actual_filename = "";
+    map <string, string> manifest_label_map;  //<label, manifest filename>
+    //check if input is label
+    map <string, string> ::iterator itr;
+    itr = manifest_label_map.find(label);
+    if (itr == manifest_label_map.end())
+        // if input is not label
+        actual_filename = label;
+    else
+        // if input is key, return value.
+        actual_filename = itr->second;
+    
+    return actual_filename;
 }
-*/
 
 
 void check_out(char* src, char * dest, char* r_manifest, char * w_manifest, int cut) {
