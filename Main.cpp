@@ -542,7 +542,7 @@ string label_to_manifest(char *label, char filename[]) {
 char* string_to_char(string str) {
 	char * writable = new char[str.size() + 1];
 	copy(str.begin(), str.end(), writable);
-	writable[str.size()] = '\0'; // don't forget the terminating 0
+	writable[str.size()] = '\0';
 	return writable;
 }
 
