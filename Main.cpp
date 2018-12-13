@@ -586,3 +586,56 @@ void check_out(char* src, char * dest, char* r_manifest, char * w_manifest, int 
 		copyFile(src_temp, dest_temp, w_manifest, cut, 1);
 	}
 }
+
+/*
+void check_out(char* src, char * dest, char* r_manifest, char * w_manifest, int cut) {
+	r_manifest = label_to_manifest(r_manifest);
+	cout << "r_manifest: " << r_manifest << endl;
+	//char *src_temp = _strdup(src);
+	string src_temp(src);
+	//cout << test << endl;
+	//char *man_temp = _strdup(r_manifest);
+	string man_temp(r_manifest);
+	src_temp = src_temp + "\\" + man_temp;
+	//strcat(src_temp, "\\");
+	//strcat(src_temp, man_temp);//test todo
+
+
+
+	vector<string> v_addresses = find_addresses(src_temp);
+	vector<string> v_addresses_fileName = find_addresses_fileName(v_addresses);
+	vector<string> v_addresses_folder = find_addresses_fileName(v_addresses_fileName);
+	vector<string> v_addresses_folder_no_repeat = eliminate_repeat(v_addresses_folder);
+	char* temp_src;
+	char* temp_dest;
+	string cmd;
+
+	for (int i = 0; i < v_addresses_folder_no_repeat.size(); i++) {
+		cout << v_addresses_folder_no_repeat[i] << endl;
+		cmd = "mkdir ";
+		string temp(dest);
+		cmd += temp;
+		cmd += v_addresses_folder_no_repeat[i];
+		system(cmd.c_str());
+	}
+
+	for (int i = 0; i < v_addresses.size() - 1; i++) {
+		temp_src = &v_addresses[i][0u];
+		temp_dest = &v_addresses_fileName[i][0u];
+		//char *src_temp = _strdup(src);
+		//char *dest_temp = _strdup(dest);
+		string src_temp(src);
+		string dest_temp(dest);
+		string temp_src1(temp_src);
+		string temp_dest1(temp_dest);
+		//strcat(src_temp, temp_src);
+		//strcat(dest_temp, temp_dest1);
+
+		src_temp += temp_src1;
+		dest_temp += temp_dest1;
+
+
+		copyFile(src_temp, dest_temp, w_manifest, cut, 1);
+		
+	}
+	*/
