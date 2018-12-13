@@ -44,6 +44,7 @@ vector<string> find_addresses_fileName(vector<string> v_addresses);
 void check_out(char* src, char * dest, char* r_manifest, char * w_manifest, int cut);
 char* string_to_char(string s);
 string label_to_manifest(char *label, char filename[]);
+
 int num_of_manifest;
 
 int main(int argc, char *argv[]) {
@@ -543,12 +544,6 @@ char* string_to_char(string str) {
 	copy(str.begin(), str.end(), writable);
 	writable[str.size()] = '\0'; // don't forget the terminating 0
 	return writable;
-}
-
-//char* to string
-string char_to_string(char* c) {
-	string str(c);
-	return str;
 }
 
 //check out
