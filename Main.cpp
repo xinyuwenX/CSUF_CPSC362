@@ -518,31 +518,39 @@ vector<string> eliminate_repeat(vector<string> v_addresses) {
 	return addresses_no_repeat;
 }
 
-char* label_to_manifest(char *label) {
+string label_to_manifest(char *label,char filename[]) {
 	//if input is label, return manifest
 	//else label is manifest
 	string actual_filename = "";
 	map <string, string> manifest_label_map;  //<label, manifest filename>
-	//check if input is label
+				//check if input is label
+	fileToMap(filename, manifest_label_map);
 	map <string, string> ::iterator itr;
+	//string Label(1, label);
+	string str(label);
 	itr = manifest_label_map.find(label);
 	if (itr == manifest_label_map.end())
 		// if input is not label
-		return label;
+		actual_filename = label;
 	// if input is key, return value.
-	actual_filename = itr->second;
-
-	return string_to_char(actual_filename);
+	else
+		actual_filename = itr->second;
+	return actual_filename;
 }
 
- //string to char*
-char* string_to_char(string s) {
-	char c[260];
-	for (int i = 0; i < s.size(); i++)
-		c[i] = s[i];
-	return c;
+//string to char*
+char* string_to_char(string str) {
+	char * writable = new char[str.size() + 1];
+	copy(str.begin(), str.end(), writable);
+	writable[str.size()] = '\0'; // don't forget the terminating 0
+	return writable;
 }
 
+//char* to string
+string char_to_string(char* c) {
+	string str(c);
+	return str;
+}
 
 void check_out(char* src, char * dest, char* r_manifest, char * w_manifest, int cut) {
 	r_manifest = label_to_manifest(r_manifest);
