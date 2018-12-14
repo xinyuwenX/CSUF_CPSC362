@@ -46,6 +46,11 @@ void check_out(char* src, char * dest, char* r_manifest, char * w_manifest, int 
 char* string_to_char(string s);
 string label_to_manifest(char *label, char filename[]);
 
+vector<string> get_manifest_information(string manifest_file);
+string get_src_manifest(string manifest_file);
+bool compare_manifests(string manifest_1, string manifest_2);
+vector<string> sort_manifests(vector<string> unsorted_manifests);
+
 int num_of_manifest;
 
 int main(int argc, char *argv[]) {
