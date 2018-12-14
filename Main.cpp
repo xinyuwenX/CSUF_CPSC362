@@ -50,6 +50,10 @@ vector<string> get_manifest_information(string manifest_file);
 string get_src_manifest(string manifest_file);
 bool compare_manifests(string manifest_1, string manifest_2);
 vector<string> sort_manifests(vector<string> unsorted_manifests);
+vector<string> get_manifests_within_the_same_branch(string manifest_file, vector<string> all_manifests);
+bool check_CREATE(string manifest_file);
+vector<string> get_all_manifests(string repo_address);
+vector<string> trace(string manifest_file, string repo_address);
 
 int num_of_manifest;
 
