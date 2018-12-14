@@ -54,6 +54,7 @@ vector<string> get_manifests_within_the_same_branch(string manifest_file, vector
 bool check_CREATE(string manifest_file);
 vector<string> get_all_manifests(string repo_address);
 vector<string> trace(string manifest_file, string repo_address);
+string get_grandma(vector<string> manifests_1, vector<string> manifests_2);
 
 int num_of_manifest;
 
@@ -767,4 +768,24 @@ vector<string> trace(string manifest_file, string repo_address) {
 	}
 
 	return manifest_families;
+}
+
+string get_grandma(vector<string> manifests_1, vector<string> manifests_2) {
+	int position = 0;
+	int len_1 = manifests_1.size();
+	int len_2 = manifests_2.size();
+
+	while (position < len_1 && position < len_2) {
+		if (manifests_1[position] == manifests_2[position])
+			position++;
+		else {
+			position--;
+			break;
+		}
+	}
+
+	if (position == len_1 || position == len_2)
+		position--;
+
+	return manifests_1[position];
 }
