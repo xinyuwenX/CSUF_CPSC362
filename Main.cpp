@@ -707,8 +707,27 @@ vector<string> sort_manifests(vector<string> unsorted_manifests) {
 	return sorted_manifests;
 }
 
-vector<string> get_manifests_within_the_same_branch(string manifest_file) {
+//if gived manifest is "CHECKIN", return all manifests within the same branch
+//if gived manifest is "CHECKOUT", return itself
+vector<string> get_manifests_within_the_same_branch(string manifest_file, vector<string> all_manifests) {
+	
+	vector<string> manifests_within_the_same_branch;
 
+	if (get_manifest_information(manifest_file)[0] == "CHECKIN") {
+		for (int i = 0; i < all_manifests.size(); i++) {
+			if (get_manifest_information(all_manifests[i])[0] == "CHECKIN"
+				&& (get_manifest_information(all_manifests[i])[1] == get_manifest_information(manifest_file)[1]))
+				manifests_within_the_same_branch.push_back(all_manifests[i]);
+			else if (get_manifest_information(all_manifests[i])[1] == "CHECKOUT"
+				&& (get_manifest_information(all_manifests[i])[2] == get_manifest_information(manifest_file)[1]))
+				manifests_within_the_same_branch.push_back(all_manifests[i]);
+		}
+	}
+
+	else if (get_manifest_information(manifest_file)[0] == "CHECKOUT")
+		manifests_within_the_same_branch.push_back(manifest_file);
+	
+	return manifests_within_the_same_branch;
 }
 
 vector<string> get_all_manifests(string repo_address) {
