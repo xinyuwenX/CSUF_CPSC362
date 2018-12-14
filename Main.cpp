@@ -730,6 +730,13 @@ vector<string> get_manifests_within_the_same_branch(string manifest_file, vector
 	return manifests_within_the_same_branch;
 }
 
+//return true if the given 
+bool check_CREATE(string manifest_file) {
+	if (get_manifest_information(manifest_file)[0] == "CREATE")
+		return true;
+	return false;
+}
+
 vector<string> get_all_manifests(string repo_address) {
 
 }
