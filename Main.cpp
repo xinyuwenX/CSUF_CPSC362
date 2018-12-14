@@ -707,8 +707,8 @@ vector<string> sort_manifests(vector<string> unsorted_manifests) {
 	return sorted_manifests;
 }
 
-//if gived manifest is "CHECKIN", return all manifests within the same branch
-//if gived manifest is "CHECKOUT", return itself
+//if the given manifest is "CHECKIN", return all manifests within the same branch
+//if the given manifest is "CHECKOUT", return itself
 vector<string> get_manifests_within_the_same_branch(string manifest_file, vector<string> all_manifests) {
 	
 	vector<string> manifests_within_the_same_branch;
