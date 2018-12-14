@@ -16,6 +16,7 @@
 #include <cstdio>
 #include <string>
 #include <string.h>
+#include <sstream>
 #include <stdlib.h>
 #include <direct.h>
 #include <cstring>
@@ -566,7 +567,7 @@ void check_out(char* src, char * dest, char* r_manifest, char * w_manifest, int 
 	vector<string> v_addresses_fileName = find_addresses_fileName(v_addresses);
 	vector<string> v_addresses_folder = find_addresses_fileName(v_addresses_fileName);
 	vector<string> v_addresses_folder_no_repeat = eliminate_repeat(v_addresses_folder);
-	
+
 	char* temp_src;
 	char* temp_dest;
 	string cmd;
@@ -594,4 +595,117 @@ void check_out(char* src, char * dest, char* r_manifest, char * w_manifest, int 
 
 		copyFile(string_to_char(src_temp), string_to_char(dest_temp), w_manifest, cut, 1);
 	}
+}
+
+//get 3 parts from a manifest file: operation, src_address, dest_address
+vector<string> get_manifest_information(string manifest_file) {
+	ifstream file;
+	char c;
+	string temp;
+	vector<string> information;
+
+	file.open(manifest_file);
+
+	while (true) {
+		temp = "";
+		while (true) {
+			c = file.get();
+			if (c == ' ' || c == '\n')
+				break;
+			else
+				temp += c;
+		}
+		information.push_back(temp);
+		if (c == '\n')
+			break;
+	}
+
+	file.close();
+
+	return information;
+}
+
+//get the source manifest file name in the 3rd line
+string get_src_manifest(string manifest_file) {
+	ifstream file;
+	char c;
+	string temp;
+	string src_manifest;
+	unsigned line_counter = 0;
+
+	file.open(manifest_file);
+	while (true) {
+		temp = "";
+		while (true) {
+			c = file.get();
+			if (c == '\n' || c == EOF)
+				break;
+			else
+				temp += c;
+		}
+		//skip the first 3 lines
+		if (line_counter < 2) {
+			line_counter++;
+			continue;
+		}
+		else if (line_counter > 3)
+			break;
+
+		src_manifest = temp;
+		if (c == EOF)
+			break;
+	}
+
+	file.close();
+
+	return src_manifest;
+}
+
+//return true if manifest_1 is older than manifest_2
+bool compare_manifests(string manifest_1, string manifest_2) {
+	string temp_1 = "";
+	string temp_2 = "";
+	int man_1;
+	int man_2;
+	const int POSITION_BEGIN = 9; //"manifest_"--> 9
+	const int POSITION_END = 4; //".txt"--> 4
+
+	for (int i = POSITION_BEGIN; i < manifest_1.size() - POSITION_END; i++)
+		temp_1 += manifest_1[i];
+	
+	for (int i = POSITION_BEGIN; i < manifest_2.size() - POSITION_END; i++)
+		temp_2 += manifest_2[i];
+
+	istringstream(temp_1) >> man_1;
+	istringstream(temp_2) >> man_2;
+	if (man_1 > man_2)
+		return true;
+	else
+		return false;
+}
+
+//sort the vector of manifests, from the oldest to the newest
+vector<string> sort_manifests(vector<string> unsorted_manifests) {
+	int least_index = 0;
+	vector<string> sorted_manifests;
+
+	while (unsorted_manifests.size() > 0) {
+		for (int i = 1; i < unsorted_manifests.size(); i++) {
+			if (compare_manifests(unsorted_manifests[least_index], unsorted_manifests[i]))
+				least_index = i;
+		}
+		swap(unsorted_manifests[least_index], unsorted_manifests[unsorted_manifests.size() - 1]);
+		sorted_manifests.push_back(unsorted_manifests[unsorted_manifests.size() - 1]);
+		unsorted_manifests.pop_back;
+	}
+
+	return sorted_manifests;
+}
+
+vector<string> get_manifests_within_the_same_branch(string manifest_file) {
+
+}
+
+vector<string> get_all_manifests(string repo_address) {
+
 }
