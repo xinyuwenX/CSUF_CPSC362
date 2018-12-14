@@ -770,6 +770,7 @@ vector<string> trace(string manifest_file, string repo_address) {
 	return manifest_families;
 }
 
+//find grandma
 string get_grandma(vector<string> manifests_1, vector<string> manifests_2) {
 	int position = 0;
 	int len_1 = manifests_1.size();
