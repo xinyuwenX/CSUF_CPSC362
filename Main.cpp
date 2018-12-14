@@ -652,7 +652,7 @@ string get_src_manifest(string manifest_file) {
 			else
 				temp += c;
 		}
-		//skip the first 3 lines
+		//skip the first 2 lines
 		if (line_counter < 2) {
 			line_counter++;
 			continue;
