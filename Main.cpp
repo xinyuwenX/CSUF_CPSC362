@@ -707,8 +707,7 @@ vector<string> sort_manifests(vector<string> unsorted_manifests) {
 	return sorted_manifests;
 }
 
-//if the given manifest is "CHECKIN", return all manifests within the same branch
-//if the given manifest is "CHECKOUT", return itself
+//if the given manifest is "CHECKIN", return all manifests older than itself within the same branch
 vector<string> get_manifests_within_the_same_branch(string manifest_file, vector<string> all_manifests) {
 	
 	vector<string> manifests_within_the_same_branch;
@@ -724,9 +723,11 @@ vector<string> get_manifests_within_the_same_branch(string manifest_file, vector
 		}
 	}
 
-	else if (get_manifest_information(manifest_file)[0] == "CHECKOUT")
-		manifests_within_the_same_branch.push_back(manifest_file);
-	
+	manifests_within_the_same_branch = sort_manifests(manifests_within_the_same_branch);
+
+	while (manifests_within_the_same_branch[manifests_within_the_same_branch.size() - 1] != manifest_file)
+		manifests_within_the_same_branch.pop_back();
+
 	return manifests_within_the_same_branch;
 }
 
@@ -739,4 +740,27 @@ bool check_CREATE(string manifest_file) {
 
 vector<string> get_all_manifests(string repo_address) {
 
+}
+
+//trace the given manifest to its oldest ancestor
+vector<string> trace(string manifest_file, string repo_address) {
+	vector<string> manifest_families;
+	vector<string> temp;
+	vector<string> all_manifest_files;
+	string temp_str;
+
+	all_manifest_files = get_all_manifests(repo_address);
+
+	while (true) {
+		temp = get_manifests_within_the_same_branch(manifest_file, all_manifest_files);
+		for (int i = 0; i < temp.size(); i++)
+			manifest_families.push_back(temp[i]);
+		manifest_families = sort_manifests(manifest_families);
+		temp_str = manifest_families[0];
+		if (check_CREATE(temp_str))
+			break;
+		manifest_file = get_src_manifest(temp_str);
+	}
+
+	return manifest_families;
 }
