@@ -857,8 +857,8 @@ void merge(string repo_manifest, string target_manifest, string repo_path, strin
 			t_file_repo = repo_path + t_version_artIds[t_index];
 			g_file_repo = repo_path + r_version_artIds[g_index];
 			r_file_target = target_path + r_version_files[i].substr(0, r_version_files[i].find(".")) + "_MR" + r_version_files[i].substr(r_version_files[i].find("."));
-			t_file_target = target_path + r_version_files[i].substr(0, r_version_files[i].find(".")) + "_MT" + r_version_files[i].substr(r_version_files[i].find("."));
-			g_file_target = target_path + r_version_files[i].substr(0, r_version_files[i].find(".")) + "_MG" + r_version_files[i].substr(r_version_files[i].find("."));
+			t_file_target = target_path + t_version_files[i].substr(0, t_version_files[i].find(".")) + "_MT" + t_version_files[i].substr(t_version_files[i].find("."));
+			g_file_target = target_path + g_version_files[i].substr(0, g_version_files[i].find(".")) + "_MG" + g_version_files[i].substr(g_version_files[i].find("."));
 			//copy the file from 3 versions
 			//copyFile(char * src_file, char * dest_file, char * manifest, int cut, int flag)
 			copyFile(string_to_char(r_file_repo), string_to_char(r_file_target), nullptr, 0, 2);
