@@ -1,5 +1,5 @@
 /*
- project_362.cpp
+ 362_Project.cpp
  ============================= CPSC 362 Project info ===============================
  Project #3 (Merged)
  Due date: 12/14/2018
