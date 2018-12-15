@@ -47,7 +47,6 @@ vector<string> find_addresses_fileName(vector<string> v_addresses);
 void check_out(char* src, char * dest, char* r_manifest, char * w_manifest, int cut);
 char* string_to_char(string s);
 string label_to_manifest(char *label, char filename[]);
-
 vector<string> get_manifest_information(string manifest_file);
 bool compare_manifests(string manifest_1, string manifest_2);
 vector<string> sort_manifests(vector<string> unsorted_manifests);
@@ -60,7 +59,6 @@ string get_grandma(string manifest_1, string manifest_2, string repo_address);
 void merge(string repo_manifest, string target_manifest, string repo_path, string target_path);
 vector<string> mergeFiles(string repo_manifest, string target_manifest);
 void printtxt(string repo_address);
-vector<string> get_manifest_name(string repo_address);
 
 int num_of_manifest;
 
@@ -68,68 +66,35 @@ int main(int argc, char *argv[]) {
 
 	int status = 0;
 	char manifest[260], message[260], manifest_path[260], manifest_name[260];
-	//repo path for merge
-	const char *repo_path = "C:\\Users\\yintaowang\\test\\repo";
-	//status = copyDir(src, dest);
-	//status = copyDir("C:\\Users\\yintaowang\\test\\src", "C:\\Users\\yintaowang\\test\\repo");
-
+	
 	//command_line
-	//const char *command_line = "CREATE";
+	const char *command_line = "CREATE";
 	//const char *command_line = "CHECKIN";
 	//const char *command_line = "CHECKOUT";
 	//const char *command_line = "LABEL";
-	const char *command_line = "MERGE";
+	//const char *command_line = "MERGE";
 
-	//get arg
-	if ((command_line == "CREATE") || (command_line == "CHECKIN")) {
-		//const char *src = argv[2];
-		//const char *dest = argv[3];
-	}
-	else if (command_line == "CHECKOUT") {
-		//const char *src = argv[2];
-		//const char *dest = argv[3];
-		//const char *r_manifest = argv[4];
-	}
-	else if (command_line == "LABEL") {
-		//const char *label = argv[2];
-		//const char *target = argv[3];
-	}
-	else if (command_line == "MERGE") {
-		//const char *repo_manifest = argv[2];
-		//const char *target_path = argv[3];
-
-	}
-	//get arg end
-
-	//TEST
-	/*char src[260] = "C:\\Users\\yintaowang\\test\\src";
-	char dest[260] = "C:\\Users\\yintaowang\\test\\repo";
-	char r_manifest[260] = "C:\\Users\\yintaowang\\test\\repo\\manifest_17.txt";*/
+	//repo path for merge
+	const char *repo_path = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo";
 
 	//CREATE & CHECKIN & LABEL
-	//const char *src = "C:\\Users\\Xinyu\\Downloads\\362_test\\src";
-	//const char *dest = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo";
+	const char *src = "C:\\Users\\Xinyu\\Downloads\\362_test\\src";
+	const char *dest = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo";
+	
 	//CHECKOUT
-	const char *src = "C:\\Users\\yintaowang\\test\\repo";
-	const char *dest = "C:\\Users\\yintaowang\\test\\bob";
+	//const char *src = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo";
+	//const char *dest = "C:\\Users\\Xinyu\\Downloads\\362_test\\checkout";
+	
+	//Label
 	const char *r_manifest = "manifest_1.txt";
-	//const char *r_manifest = "label_test";
+	//const char *r_manifest = "label";
+	
 	//merge
-	string repo_manifest = "manifest_3.txt";
-	const char *target_path = "C:\\Users\\yintaowang\\test\\bob";
-
-
-
+	string repo_manifest = "manifest_1.txt";
+	const char *target_path = "C:\\Users\\Xinyu\\Downloads\\362_test\\xinyu";
+	
 	if ((command_line == "CREATE") || (command_line == "CHECKIN") || (command_line == "CHECKOUT") || (command_line == "MERGE")) {
-		//get manifest path
-		/*if (command_line == "CHECKOUT") {
-			strcpy(manifest_path, src);
-		}
-		else {
-			strcpy(manifest_path, dest);
-		}*/
-
-		//manifest file name
+		
 		strcpy(manifest_path, repo_path);
 		string manifest_p = "dir ";
 		manifest_p.append(manifest_path);
@@ -715,14 +680,12 @@ vector<string> sort_manifests(vector<string> unsorted_manifests) {
 
 //if the given manifest is "CHECKIN", return all manifests older than itself within the same branch
 vector<string> get_manifests_within_the_same_branch(string manifest_file, vector<string> all_manifests, string repo_address) {
+	
 	vector<string> manifests_within_the_same_branch;
-	//test
-	cout << get_manifest_information(manifest_file)[0] << endl;
+	
 	if (get_manifest_information(manifest_file)[0] == "CHECKIN") {
 		for (int i = 0; i < all_manifests.size(); i++) {
-			//test
-			cout << get_manifest_information(repo_address + "\\" + all_manifests[i])[0] << endl;
-			cout << get_manifest_information(repo_address + "\\" + all_manifests[i])[1] << endl;
+
 			if ((get_manifest_information(repo_address + "\\" + all_manifests[i])[0] == "CHECKIN")
 				&& (get_manifest_information(repo_address + "\\" + all_manifests[i])[1] == get_manifest_information(manifest_file)[1]))
 			{
@@ -736,16 +699,20 @@ vector<string> get_manifests_within_the_same_branch(string manifest_file, vector
 		}
 	}
 
-	//else if (get_manifest_information(manifest_file)[0] == "CHECKOUT" || get_manifest_information(manifest_file)[0] == "CREATE")
-	manifests_within_the_same_branch.push_back(manifest_file.substr(manifest_file.find("manifest")));
 
-
-
+	
+	else {
+		manifests_within_the_same_branch.push_back(manifest_file.substr(manifest_file.find("manifest")));
+		}
+	
+	
 	manifests_within_the_same_branch = sort_manifests(manifests_within_the_same_branch);
 
-	while (manifests_within_the_same_branch[manifests_within_the_same_branch.size() - 1] != manifest_file.substr(manifest_file.find("manifest")))
+	if (manifests_within_the_same_branch.size() > 1) {
+		while (manifests_within_the_same_branch[manifests_within_the_same_branch.size() - 1] != manifest_file.substr(manifest_file.find("manifest")))
 		manifests_within_the_same_branch.pop_back();
-
+	}
+	
 	return manifests_within_the_same_branch;
 }
 
@@ -754,21 +721,6 @@ bool check_CREATE(string manifest_file) {
 	if (get_manifest_information(manifest_file)[0] == "CREATE")
 		return true;
 	return false;
-}
-//test
-vector<string> get_all_manifests(string repo_address) {
-	string test_1 = "manifest_1.txt";
-	string test_2 = "manifest_2.txt";
-	string test_3 = "manifest_3.txt";
-	string test_4 = "manifest_4.txt";
-	string test_5 = "manifest_5.txt";
-	vector<string> all_manifests;
-	all_manifests.push_back(test_1);
-	all_manifests.push_back(test_2);
-	all_manifests.push_back(test_3);
-	all_manifests.push_back(test_4);
-	all_manifests.push_back(test_5);
-	return all_manifests;
 }
 
 //trace the given manifest to its oldest ancestor
@@ -784,7 +736,6 @@ vector<string> trace(string manifest_file, string repo_address) {
 		temp = get_manifests_within_the_same_branch(manifest_file, all_manifest_files, repo_address);
 		for (int i = 0; i < temp.size(); i++)
 		{
-			cout << temp[i] << endl;
 			manifest_families.push_back(temp[i]);
 		}
 		manifest_families = sort_manifests(manifest_families);
@@ -836,7 +787,7 @@ string get_grandma(string manifest_1, string manifest_2, string repo_address) {
 
 	manifests_1_test = trace(manifest_1, repo_address);
 	manifests_2_test = trace(manifest_2, repo_address);
-	cout << "kkkk" << endl;
+
 	grandma = find_grandma(manifests_1_test, manifests_2_test);
 	return grandma;
 }
@@ -880,17 +831,7 @@ void merge(string repo_manifest, string target_manifest, string repo_path, strin
 
 vector<string> mergeFiles(string repo_manifest, string target_manifest) {
 	vector<string> r_version_files = find_addresses_fileName(find_addresses(repo_manifest));
-	/*for (int i = 0; i < r_version_files.size(); i++) {
-		cout << "=========r==========" << endl;
-		cout << r_version_files[i] << endl;
-		cout << "===================" << endl;
-	}*/
 	vector<string> t_version_files = find_addresses_fileName(find_addresses(target_manifest));
-	//for (int i = 0; i < t_version_files.size(); i++) {
-	//	cout << "==========t=========" << endl;
-	//	cout << t_version_files[i] << endl;
-	//	cout << "===================" << endl;
-	//}
 	vector<string> r_version_artIds = find_addresses(repo_manifest);
 	vector<string> t_version_artIds = find_addresses(target_manifest);
 	vector<string> merge_files;
@@ -908,22 +849,10 @@ vector<string> mergeFiles(string repo_manifest, string target_manifest) {
 	return merge_files;
 }
 
-void printtxt(string repo_address)
-{
-	vector <std::string> files;
-	string address = "C:\\Users\\ChInAhuang\\Desktop\\template.txt";
-	ofstream out(address);
-	string path = repo_address;
-	for (const auto & entry : fs::directory_iterator(path)) {
-		out << entry.path() << std::endl;
-	}
-}
-
-
-vector<string> get_manifest_name(string repo_address)
-{
+//given a repo address, store all manifest file names in that repo into a vector
+vector<string> get_all_manifests(string repo_address) {
 	printtxt(repo_address);
-	string file = "C:\\Users\\ChInAhuang\\Desktop\\template.txt";
+	string file = "C:\\template.txt";
 	vector<string> file_content;
 	ifstream in(file);
 	string line;
@@ -946,10 +875,18 @@ vector<string> get_manifest_name(string repo_address)
 		if ((file_content[i].find(search)) != string::npos)
 		{
 			file_content[i].substr(file_content[i].find(search));
-			//cout << file_content[i].substr(file_content[i].find(search)) << endl;
-
 		}
 
 	}
 	return file_content;
+}
+
+void printtxt(string repo_address) {
+	vector <std::string> files;
+	string address = "C:\\template.txt";
+	ofstream out(address);
+	string path = repo_address;
+	for (const auto & entry : fs::directory_iterator(path)) {
+		out << entry.path() << std::endl;
+	}
 }
