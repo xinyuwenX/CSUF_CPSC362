@@ -754,7 +754,7 @@ vector<string> trace(string manifest_file, string repo_address) {
 	all_manifest_files = get_all_manifests(repo_address);
 
 	while (true) {
-		temp = get_manifests_within_the_same_branch(manifest_file, all_manifest_files);
+		temp = get_manifests_within_the_same_branch(manifest_file, all_manifest_files, repo_address);
 		for (int i = 0; i < temp.size(); i++)
 		{
 			cout << temp[i] << endl;
