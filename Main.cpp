@@ -62,6 +62,8 @@ int main(int argc, char *argv[]) {
 
 	int status = 0;
 	char manifest[260], message[260], manifest_path[260], manifest_name[260];
+	//repo path for merge
+	const char *repo_path = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo";
 	//status = copyDir(src, dest);
 	//status = copyDir("C:\\Users\\yintaowang\\test\\src", "C:\\Users\\yintaowang\\test\\repo");
 
@@ -85,6 +87,11 @@ int main(int argc, char *argv[]) {
 		//const char *label = argv[2];
 		//const char *target = argv[3];
 	}
+	else if (command_line == "MERGE") {
+		//const char *repo_manifest = argv[2];
+		//const char *target_path = argv[3];
+	
+	}
 	//get arg end
 
 	//TEST
@@ -100,11 +107,13 @@ int main(int argc, char *argv[]) {
 	const char *dest = "C:\\Users\\Xinyu\\Downloads\\362_test\\checkout";
 	//const char *r_manifest = "manifest_1.txt";
 	const char *r_manifest = "label_test";
+	//merge
+	const char *repo_manifest = "label_test";
+	const char *target_path = "C:\\Users\\Xinyu\\Downloads\\362_test\\dory";
 
 
 
-
-	if ((command_line == "CREATE") || (command_line == "CHECKIN") || (command_line == "CHECKOUT")) {
+	if ((command_line == "CREATE") || (command_line == "CHECKIN") || (command_line == "CHECKOUT") || (command_line=="MERGE")) {
 		//get manifest path
 		if (command_line == "CHECKOUT") {
 			strcpy(manifest_path, src);
@@ -172,6 +181,14 @@ int main(int argc, char *argv[]) {
 		char destination[260];
 		strcpy(destination, dest);
 		addLabel(label_file, destination);
+	}
+	else if (command_line=="MERGE") {
+		//do check in ro make sure the target manifest is up-to-date
+		status = copyDir(target_path, repo_path, manifest, strlen(repo_path));
+		//merge
+		merge(repo_manifest, manifest);
+
+	
 	}
 	else {
 		cout << "input command is invalid!!!" << endl;
@@ -607,6 +624,7 @@ void check_out(char* src, char * dest, char* r_manifest, char * w_manifest, int 
 	}
 }
 
+//merge start
 //get 3 parts from a manifest file: operation, src_address, dest_address
 vector<string> get_manifest_information(string manifest_file) {
 	ifstream file;
@@ -682,7 +700,7 @@ bool compare_manifests(string manifest_1, string manifest_2) {
 
 	for (int i = POSITION_BEGIN; i < manifest_1.size() - POSITION_END; i++)
 		temp_1 += manifest_1[i];
-	
+
 	for (int i = POSITION_BEGIN; i < manifest_2.size() - POSITION_END; i++)
 		temp_2 += manifest_2[i];
 
@@ -714,7 +732,7 @@ vector<string> sort_manifests(vector<string> unsorted_manifests) {
 
 //if the given manifest is "CHECKIN", return all manifests older than itself within the same branch
 vector<string> get_manifests_within_the_same_branch(string manifest_file, vector<string> all_manifests) {
-	
+
 	vector<string> manifests_within_the_same_branch;
 
 	if (get_manifest_information(manifest_file)[0] == "CHECKIN") {
@@ -789,4 +807,38 @@ string get_grandma(vector<string> manifests_1, vector<string> manifests_2) {
 		position--;
 
 	return manifests_1[position];
+}
+
+void merge(string repo_manifest, string target_manifest) {
+	
+	
+
+
+
+}
+
+vector<string> mergeFiles(string repo_manifest, string target_manifest) {
+	vector<string> r_version_files = find_addresses_fileName(find_addresses(repo_manifest));
+	vector<string> t_version_files = find_addresses_fileName(find_addresses(target_manifest));
+	vector<string> r_version_artIds = find_addresses(repo_manifest);
+	vector<string> t_version_artIds = find_addresses(target_manifest);
+	vector<string> merge_files;
+
+	//compare artIDs to decide merge or not
+	for (int i = 0; i < r_version_files.size(); i++) {
+		int t_index = find(t_version_files.begin(), t_version_files.end(), r_version_files[i]) - t_version_files.begin();
+		if (t_index != t_version_files.size()) {
+			//both tree has the file, compare their artIDs
+			if (r_version_artIds[i] != t_version_artIds[t_index]) {
+				merge_files.push_back(r_version_files[i]);
+			}
+		}
+	}
+	return merge_files;
+}
+
+
+vector<string> traceBranchPath(char manifest, string repo) {
+
+
 }
