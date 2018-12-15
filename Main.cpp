@@ -766,10 +766,14 @@ vector<string> get_all_manifests(string repo_address) {
 	string test_1 = "manifest_1.txt";
 	string test_2 = "manifest_2.txt";
 	string test_3 = "manifest_3.txt";
+	string test_4 = "manifest_4.txt";
+	string test_5 = "manifest_5.txt";
 	vector<string> all_manifests;
 	all_manifests.push_back(test_1);
 	all_manifests.push_back(test_2);
 	all_manifests.push_back(test_3);
+	all_manifests.push_back(test_4);
+	all_manifests.push_back(test_5);
 	return all_manifests;
 }
 
