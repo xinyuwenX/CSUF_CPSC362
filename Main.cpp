@@ -28,6 +28,8 @@
 #include <ctime>
 #include <map>
 #include <vector>
+#include <filesystem>
+namespace fs = std::experimental::filesystem;
 
 using namespace std;
 
@@ -57,6 +59,8 @@ string find_grandma(vector<string> manifests_1, vector<string> manifests_2);
 string get_grandma(string manifest_1, string manifest_2, string repo_address);
 void merge(string repo_manifest, string target_manifest, string repo_path, string target_path);
 vector<string> mergeFiles(string repo_manifest, string target_manifest);
+void printtxt(string repo_address);
+vector<string> get_manifest_name(string repo_address);
 
 int num_of_manifest;
 
@@ -135,11 +139,11 @@ int main(int argc, char *argv[]) {
 		strcpy(manifest, manifest_path);
 		strcat(manifest, "\\");
 		strcat(manifest, manifest_name);
-		if (command_line=="MERGE") {
+		if (command_line == "MERGE") {
 			strcpy(message, "CHECKIN");
 		}
 		else {
-			strcpy(message, command_line);	
+			strcpy(message, command_line);
 		}
 		strcat(message, " ");
 		strcat(message, src);
@@ -733,7 +737,7 @@ vector<string> get_manifests_within_the_same_branch(string manifest_file, vector
 	}
 
 	//else if (get_manifest_information(manifest_file)[0] == "CHECKOUT" || get_manifest_information(manifest_file)[0] == "CREATE")
-		manifests_within_the_same_branch.push_back(manifest_file.substr(manifest_file.find("manifest")));
+	manifests_within_the_same_branch.push_back(manifest_file.substr(manifest_file.find("manifest")));
 
 
 
@@ -902,4 +906,50 @@ vector<string> mergeFiles(string repo_manifest, string target_manifest) {
 		}
 	}
 	return merge_files;
+}
+
+void printtxt(string repo_address)
+{
+	vector <std::string> files;
+	string address = "C:\\Users\\ChInAhuang\\Desktop\\template.txt";
+	ofstream out(address);
+	string path = repo_address;
+	for (const auto & entry : fs::directory_iterator(path)) {
+		out << entry.path() << std::endl;
+	}
+}
+
+
+vector<string> get_manifest_name(string repo_address)
+{
+	printtxt(repo_address);
+	string file = "C:\\Users\\ChInAhuang\\Desktop\\template.txt";
+	vector<string> file_content;
+	ifstream in(file);
+	string line;
+	if (in)
+	{
+		while (getline(in, line))
+		{
+			if (line != "")
+			{
+				file_content.push_back(line);
+			}
+		}
+	}
+	else {
+		cout << "worng with vector<string> get_manifest_name input file" << endl;
+	}
+	string search = "manifest";
+	for (int i = 0; i < file_content.size(); i++) {
+
+		if ((file_content[i].find(search)) != string::npos)
+		{
+			file_content[i].substr(file_content[i].find(search));
+			//cout << file_content[i].substr(file_content[i].find(search)) << endl;
+
+		}
+
+	}
+	return file_content;
 }
