@@ -32,6 +32,5 @@ of the Mac, it showed us bunch of errors.
 make us feel really hard when we keep doing our next project, it is really hard for debugging, we using at least
  90% of the time in debugging.
 3.The Merge function still not working really well, when we doing our Merge function, we split the code into
-many sub-function, find_grandma, get,grandma, trace(trace the path), get_manifest_different_brunch, get_manifestname,
-get_manifest_name_same_brunch. the big confusing problem is that we can test it sepreatly in own function, but we 
-when combine all the function into Merge function, it crash.
+many sub-function, find_grandma, get_grandma, trace(trace the path), get_manifest_different_brunch, get_manifestname,
+get_manifest_name_same_brunch. the big confusing problem is that we can test it sepreatly in own function, but when we  combine all the function into Merge function, it crash.
