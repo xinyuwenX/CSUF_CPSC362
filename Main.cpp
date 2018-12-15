@@ -54,7 +54,8 @@ vector<string> get_manifests_within_the_same_branch(string manifest_file, vector
 bool check_CREATE(string manifest_file);
 vector<string> get_all_manifests(string repo_address);
 vector<string> trace(string manifest_file, string repo_address);
-string get_grandma(vector<string> manifests_1, vector<string> manifests_2);
+string find_grandma(vector<string> manifests_1, vector<string> manifests_2);
+string get_grandma(string manifest_1, string manifest_2, string repo_address);
 
 int num_of_manifest;
 
@@ -90,7 +91,7 @@ int main(int argc, char *argv[]) {
 	else if (command_line == "MERGE") {
 		//const char *repo_manifest = argv[2];
 		//const char *target_path = argv[3];
-	
+
 	}
 	//get arg end
 
@@ -113,7 +114,7 @@ int main(int argc, char *argv[]) {
 
 
 
-	if ((command_line == "CREATE") || (command_line == "CHECKIN") || (command_line == "CHECKOUT") || (command_line=="MERGE")) {
+	if ((command_line == "CREATE") || (command_line == "CHECKIN") || (command_line == "CHECKOUT") || (command_line == "MERGE")) {
 		//get manifest path
 		if (command_line == "CHECKOUT") {
 			strcpy(manifest_path, src);
@@ -182,13 +183,13 @@ int main(int argc, char *argv[]) {
 		strcpy(destination, dest);
 		addLabel(label_file, destination);
 	}
-	else if (command_line=="MERGE") {
+	else if (command_line == "MERGE") {
 		//do check in ro make sure the target manifest is up-to-date
 		status = copyDir(target_path, repo_path, manifest, strlen(repo_path));
 		//merge
 		merge(repo_manifest, manifest);
 
-	
+
 	}
 	else {
 		cout << "input command is invalid!!!" << endl;
@@ -788,8 +789,8 @@ vector<string> trace(string manifest_file, string repo_address) {
 	return manifest_families;
 }
 
-//find grandma
-string get_grandma(vector<string> manifests_1, vector<string> manifests_2) {
+//given 2 vectors, find grandma
+string find_grandma(vector<string> manifests_1, vector<string> manifests_2) {
 	int position = 0;
 	int len_1 = manifests_1.size();
 	int len_2 = manifests_2.size();
@@ -809,9 +810,30 @@ string get_grandma(vector<string> manifests_1, vector<string> manifests_2) {
 	return manifests_1[position];
 }
 
+//given 2 manifests addresses and repo address, get grandma
+string get_grandma(string manifest_1, string manifest_2, string repo_address) {
+	string temp;
+	string manifest_file_1 = "";
+	string manifest_file_2 = "";
+	vector<string> manifests_1;
+	vector<string> manifests_2;
+	string grandma;
+
+	for (int i = repo_address.size() + 1; i < manifest_1.size(); i++)
+		manifest_file_1 += manifest_1[i];
+
+	for (int i = repo_address.size() + 1; i < manifest_2.size(); i++)
+		manifest_file_2 += manifest_2[i];
+
+	manifests_1 = trace(manifest_file_1, repo_address);
+	manifests_2 = trace(manifest_file_2, repo_address);
+
+	grandma = find_grandma(manifests_1, manifests_2);
+}
+
 void merge(string repo_manifest, string target_manifest) {
-	
-	
+
+
 
 
 
