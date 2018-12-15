@@ -863,7 +863,7 @@ void merge(string repo_manifest, string target_manifest, string repo_path, strin
 			//copyFile(char * src_file, char * dest_file, char * manifest, int cut, int flag)
 			copyFile(string_to_char(r_file_repo), string_to_char(r_file_target), nullptr, 0, 2);
 			copyFile(string_to_char(t_file_repo), string_to_char(t_file_target), nullptr, 0, 2);
-			copyFile(string_to_char(t_file_repo), string_to_char(t_file_target), nullptr, 0, 2);
+			copyFile(string_to_char(g_file_repo), string_to_char(g_file_target), nullptr, 0, 2);
 		}
 	}
 }
