@@ -763,7 +763,14 @@ bool check_CREATE(string manifest_file) {
 }
 
 vector<string> get_all_manifests(string repo_address) {
-
+	string test_1 = "manifest_1.txt";
+	string test_2 = "manifest_2.txt";
+	string test_3 = "manifest_3.txt";
+	vector<string> all_manifests;
+	all_manifests.push_back(test_1);
+	all_manifests.push_back(test_2);
+	all_manifests.push_back(test_3);
+	return all_manifests;
 }
 
 //trace the given manifest to its oldest ancestor
