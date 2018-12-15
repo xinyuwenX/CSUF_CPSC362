@@ -1,5 +1,5 @@
 /*
- 362_Project.cpp
+ project_362.cpp
  ============================= CPSC 362 Project info ===============================
  Project #3 (Merged)
  Due date: 12/14/2018
@@ -66,14 +66,14 @@ int main(int argc, char *argv[]) {
 	int status = 0;
 	char manifest[260], message[260], manifest_path[260], manifest_name[260];
 	//repo path for merge
-	const char *repo_path = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo";
+	const char *repo_path = "C:\\Users\\yintaowang\\test\\repo";
 	//status = copyDir(src, dest);
 	//status = copyDir("C:\\Users\\yintaowang\\test\\src", "C:\\Users\\yintaowang\\test\\repo");
 
 	//command_line
 	//const char *command_line = "CREATE";
-	//const char *command_line = "CHECKIN";
-	const char *command_line = "CHECKOUT";
+	const char *command_line = "CHECKIN";
+	//const char *command_line = "CHECKOUT";
 	//const char *command_line = "LABEL";
 
 	//get arg
@@ -106,10 +106,10 @@ int main(int argc, char *argv[]) {
 	//const char *src = "C:\\Users\\Xinyu\\Downloads\\362_test\\src";
 	//const char *dest = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo";
 	//CHECKOUT
-	const char *src = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo";
-	const char *dest = "C:\\Users\\Xinyu\\Downloads\\362_test\\checkout";
-	//const char *r_manifest = "manifest_1.txt";
-	const char *r_manifest = "label_test";
+	const char *src = "C:\\Users\\yintaowang\\test\\fred";
+	const char *dest = "C:\\Users\\yintaowang\\test\\repo";
+	const char *r_manifest = "manifest_1.txt";
+	//const char *r_manifest = "label_test";
 	//merge
 	const char *repo_manifest = "label_test";
 	const char *target_path = "C:\\Users\\Xinyu\\Downloads\\362_test\\dory";
@@ -725,7 +725,7 @@ vector<string> sort_manifests(vector<string> unsorted_manifests) {
 		}
 		swap(unsorted_manifests[least_index], unsorted_manifests[unsorted_manifests.size() - 1]);
 		sorted_manifests.push_back(unsorted_manifests[unsorted_manifests.size() - 1]);
-		unsorted_manifests.pop_back;
+		unsorted_manifests.pop_back();
 	}
 
 	return sorted_manifests;
@@ -761,7 +761,7 @@ bool check_CREATE(string manifest_file) {
 		return true;
 	return false;
 }
-
+//test
 vector<string> get_all_manifests(string repo_address) {
 	string test_1 = "manifest_1.txt";
 	string test_2 = "manifest_2.txt";
@@ -840,6 +840,7 @@ string get_grandma(string manifest_1, string manifest_2, string repo_address) {
 	manifests_2 = trace(manifest_file_2, repo_address);
 
 	grandma = find_grandma(manifests_1, manifests_2);
+	return grandma;
 }
 
 void merge(string repo_manifest, string target_manifest, string repo_path, string target_path) {
@@ -854,7 +855,7 @@ void merge(string repo_manifest, string target_manifest, string repo_path, strin
 		vector<string> g_version_files = find_addresses_fileName(find_addresses(repo_path + grandMa_manifest));
 		vector<string> r_version_artIds = find_addresses(repo_manifest);
 		vector<string> t_version_artIds = find_addresses(target_manifest);
-		vector<string> g_version_artIds = find_addresses(repo_path + grandMa_manifest);
+		vector<string> g_version_artIds = find_addresses(repo_path + "\\" + grandMa_manifest);
 
 		string r_file_repo, t_file_repo, g_file_repo, r_file_target, t_file_target, g_file_target;
 		int r_index, t_index, g_index;
@@ -864,7 +865,7 @@ void merge(string repo_manifest, string target_manifest, string repo_path, strin
 			t_index = find(t_version_files.begin(), t_version_files.end(), merge_files[i]) - t_version_files.begin();
 			g_index = find(g_version_files.begin(), g_version_files.end(), merge_files[i]) - g_version_files.begin();
 			//3-way merge files
-			r_file_repo = repo_path + r_version_artIds[r_index];;
+			r_file_repo = repo_path + r_version_artIds[r_index];
 			t_file_repo = repo_path + t_version_artIds[t_index];
 			g_file_repo = repo_path + g_version_artIds[g_index];
 			r_file_target = target_path + r_version_files[i].substr(0, r_version_files[i].find(".")) + "_MR" + r_version_files[i].substr(r_version_files[i].find("."));
