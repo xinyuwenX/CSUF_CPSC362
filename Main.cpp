@@ -854,7 +854,7 @@ void merge(string repo_manifest, string target_manifest, string repo_path, strin
 		vector<string> g_version_files = find_addresses_fileName(find_addresses(repo_path + grandMa_manifest));
 		vector<string> r_version_artIds = find_addresses(repo_manifest);
 		vector<string> t_version_artIds = find_addresses(target_manifest);
-		vector<string> r_version_artIds = find_addresses(repo_path + grandMa_manifest);
+		vector<string> g_version_artIds = find_addresses(repo_path + grandMa_manifest);
 
 		string r_file_repo, t_file_repo, g_file_repo, r_file_target, t_file_target, g_file_target;
 		int r_index, t_index, g_index;
@@ -866,7 +866,7 @@ void merge(string repo_manifest, string target_manifest, string repo_path, strin
 			//3-way merge files
 			r_file_repo = repo_path + r_version_artIds[r_index];;
 			t_file_repo = repo_path + t_version_artIds[t_index];
-			g_file_repo = repo_path + r_version_artIds[g_index];
+			g_file_repo = repo_path + g_version_artIds[g_index];
 			r_file_target = target_path + r_version_files[i].substr(0, r_version_files[i].find(".")) + "_MR" + r_version_files[i].substr(r_version_files[i].find("."));
 			t_file_target = target_path + t_version_files[i].substr(0, t_version_files[i].find(".")) + "_MT" + t_version_files[i].substr(t_version_files[i].find("."));
 			g_file_target = target_path + g_version_files[i].substr(0, g_version_files[i].find(".")) + "_MG" + g_version_files[i].substr(g_version_files[i].find("."));
