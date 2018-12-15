@@ -14,7 +14,7 @@ to merge two project trees (that are based on the same repo).
 
 Contents:
 There are two files include in the zip file, one the the Readme file another is the code cpp file.
-README
+README.txt
 362_Project.cpp
 
 Features:
