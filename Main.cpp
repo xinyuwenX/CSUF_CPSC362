@@ -56,6 +56,8 @@ vector<string> get_all_manifests(string repo_address);
 vector<string> trace(string manifest_file, string repo_address);
 string find_grandma(vector<string> manifests_1, vector<string> manifests_2);
 string get_grandma(string manifest_1, string manifest_2, string repo_address);
+void merge(string repo_manifest, string target_manifest, string repo_path, string target_path);
+vector<string> mergeFiles(string repo_manifest, string target_manifest);
 
 int num_of_manifest;
 
@@ -187,9 +189,7 @@ int main(int argc, char *argv[]) {
 		//do check in ro make sure the target manifest is up-to-date
 		status = copyDir(target_path, repo_path, manifest, strlen(repo_path));
 		//merge
-		merge(repo_manifest, manifest);
-
-
+		merge(repo_path + label_to_manifest(string_to_char(repo_manifest), string_to_char(repo_path)), manifest, repo_path, target_path);
 	}
 	else {
 		cout << "input command is invalid!!!" << endl;
@@ -300,7 +300,7 @@ void copyFile(char * src_file, char * dest_file, char * manifest, int cut, int f
 		//write manifest file CHECKOUT
 		writeFile(manifest, src_file + cut);
 	}
-	else {
+	else if (flag == 0) {
 		//write manifest file
 		writeFile(manifest, dest_file + cut);
 	}
@@ -831,12 +831,41 @@ string get_grandma(string manifest_1, string manifest_2, string repo_address) {
 	grandma = find_grandma(manifests_1, manifests_2);
 }
 
-void merge(string repo_manifest, string target_manifest) {
+void merge(string repo_manifest, string target_manifest, string repo_path, string target_path) {
 
+	vector<string> merge_files = mergeFiles(repo_manifest, target_manifest);
+	if (merge_files.size() != 0) {
+		//need to merge
+		string grandMa_manifest = get_grandma(repo_manifest, target_manifest, repo_path);
 
+		vector<string> r_version_files = find_addresses_fileName(find_addresses(repo_manifest));
+		vector<string> t_version_files = find_addresses_fileName(find_addresses(target_manifest));
+		vector<string> g_version_files = find_addresses_fileName(find_addresses(repo_path + grandMa_manifest));
+		vector<string> r_version_artIds = find_addresses(repo_manifest);
+		vector<string> t_version_artIds = find_addresses(target_manifest);
+		vector<string> r_version_artIds = find_addresses(repo_path + grandMa_manifest);
 
+		string r_file_repo, t_file_repo, g_file_repo, r_file_target, t_file_target, g_file_target;
+		int r_index, t_index, g_index;
 
-
+		for (int i = 0; i < merge_files.size(); i++) {
+			r_index = find(r_version_files.begin(), r_version_files.end(), merge_files[i]) - r_version_files.begin();
+			t_index = find(t_version_files.begin(), t_version_files.end(), merge_files[i]) - t_version_files.begin();
+			g_index = find(g_version_files.begin(), g_version_files.end(), merge_files[i]) - g_version_files.begin();
+			//3-way merge files
+			r_file_repo = repo_path + r_version_artIds[r_index];;
+			t_file_repo = repo_path + t_version_artIds[t_index];
+			g_file_repo = repo_path + r_version_artIds[g_index];
+			r_file_target = target_path + r_version_files[i].substr(0, r_version_files[i].find(".")) + "_MR" + r_version_files[i].substr(r_version_files[i].find("."));
+			t_file_target = target_path + r_version_files[i].substr(0, r_version_files[i].find(".")) + "_MT" + r_version_files[i].substr(r_version_files[i].find("."));
+			g_file_target = target_path + r_version_files[i].substr(0, r_version_files[i].find(".")) + "_MG" + r_version_files[i].substr(r_version_files[i].find("."));
+			//copy the file from 3 versions
+			//copyFile(char * src_file, char * dest_file, char * manifest, int cut, int flag)
+			copyFile(string_to_char(r_file_repo), string_to_char(r_file_target), nullptr, 0, 2);
+			copyFile(string_to_char(t_file_repo), string_to_char(t_file_target), nullptr, 0, 2);
+			copyFile(string_to_char(t_file_repo), string_to_char(t_file_target), nullptr, 0, 2);
+		}
+	}
 }
 
 vector<string> mergeFiles(string repo_manifest, string target_manifest) {
@@ -857,10 +886,4 @@ vector<string> mergeFiles(string repo_manifest, string target_manifest) {
 		}
 	}
 	return merge_files;
-}
-
-
-vector<string> traceBranchPath(char manifest, string repo) {
-
-
 }
