@@ -193,7 +193,6 @@ int main(int argc, char *argv[]) {
 		//do check in ro make sure the target manifest is up-to-date
 		status = copyDir(target_path, repo_path, manifest, strlen(repo_path));
 		//merge
-		//strcat(repo_path, "\\");
 		merge(repo_path + label_to_manifest(string_to_char("\\" + repo_manifest), string_to_char(repo_path)), manifest, repo_path, target_path);
 	}
 	else {
@@ -758,7 +757,10 @@ vector<string> trace(string manifest_file, string repo_address) {
 	while (true) {
 		temp = get_manifests_within_the_same_branch(manifest_file, all_manifest_files);
 		for (int i = 0; i < temp.size(); i++)
+		{
+			cout << temp[i] << endl;
 			manifest_families.push_back(temp[i]);
+		}
 		manifest_families = sort_manifests(manifest_families);
 		temp_str = manifest_families[0];
 		if (check_CREATE(temp_str))
@@ -795,8 +797,8 @@ string get_grandma(string manifest_1, string manifest_2, string repo_address) {
 	string temp;
 	string manifest_file_1 = "";
 	string manifest_file_2 = "";
-	vector<string> manifests_1;
-	vector<string> manifests_2;
+	vector<string> manifests_1_test;
+	vector<string> manifests_2_test;
 	string grandma;
 
 	for (int i = repo_address.size() + 1; i < manifest_1.size(); i++)
@@ -805,10 +807,10 @@ string get_grandma(string manifest_1, string manifest_2, string repo_address) {
 	for (int i = repo_address.size() + 1; i < manifest_2.size(); i++)
 		manifest_file_2 += manifest_2[i];
 
-	manifests_1 = trace(manifest_file_1, repo_address);
-	manifests_2 = trace(manifest_file_2, repo_address);
+	manifests_1_test = trace(manifest_1, repo_address);
+	manifests_2_test = trace(manifest_2, repo_address);
 
-	grandma = find_grandma(manifests_1, manifests_2);
+	grandma = find_grandma(manifests_1_test, manifests_2_test);
 	return grandma;
 }
 
@@ -821,7 +823,7 @@ void merge(string repo_manifest, string target_manifest, string repo_path, strin
 
 		vector<string> r_version_files = find_addresses_fileName(find_addresses(repo_manifest));
 		vector<string> t_version_files = find_addresses_fileName(find_addresses(target_manifest));
-		vector<string> g_version_files = find_addresses_fileName(find_addresses(repo_path + grandMa_manifest));
+		vector<string> g_version_files = find_addresses_fileName(find_addresses(repo_path + "\\" + grandMa_manifest));
 		vector<string> r_version_artIds = find_addresses(repo_manifest);
 		vector<string> t_version_artIds = find_addresses(target_manifest);
 		vector<string> g_version_artIds = find_addresses(repo_path + "\\" + grandMa_manifest);
@@ -851,23 +853,23 @@ void merge(string repo_manifest, string target_manifest, string repo_path, strin
 
 vector<string> mergeFiles(string repo_manifest, string target_manifest) {
 	vector<string> r_version_files = find_addresses_fileName(find_addresses(repo_manifest));
-	for (int i = 0; i < r_version_files.size(); i++) {
+	/*for (int i = 0; i < r_version_files.size(); i++) {
 		cout << "=========r==========" << endl;
 		cout << r_version_files[i] << endl;
 		cout << "===================" << endl;
-	}
+	}*/
 	vector<string> t_version_files = find_addresses_fileName(find_addresses(target_manifest));
-	for (int i = 0; i < t_version_files.size(); i++) {
-		cout << "==========t=========" << endl;
-		cout << t_version_files[i] << endl;
-		cout << "===================" << endl;
-	}
+	//for (int i = 0; i < t_version_files.size(); i++) {
+	//	cout << "==========t=========" << endl;
+	//	cout << t_version_files[i] << endl;
+	//	cout << "===================" << endl;
+	//}
 	vector<string> r_version_artIds = find_addresses(repo_manifest);
 	vector<string> t_version_artIds = find_addresses(target_manifest);
 	vector<string> merge_files;
 
 	//compare artIDs to decide merge or not
-	for (int i = 0; i < r_version_files.size(); i++) {
+	for (int i = 0; i < r_version_files.size()-1; i++) {
 		int t_index = find(t_version_files.begin(), t_version_files.end(), r_version_files[i]) - t_version_files.begin();
 		if (t_index != t_version_files.size()) {
 			//both tree has the file, compare their artIDs
