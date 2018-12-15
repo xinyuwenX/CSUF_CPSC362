@@ -71,9 +71,10 @@ int main(int argc, char *argv[]) {
 
 	//command_line
 	//const char *command_line = "CREATE";
-	const char *command_line = "CHECKIN";
+	//const char *command_line = "CHECKIN";
 	//const char *command_line = "CHECKOUT";
 	//const char *command_line = "LABEL";
+	const char *command_line = "MERGE";
 
 	//get arg
 	if ((command_line == "CREATE") || (command_line == "CHECKIN")) {
@@ -105,26 +106,27 @@ int main(int argc, char *argv[]) {
 	//const char *src = "C:\\Users\\Xinyu\\Downloads\\362_test\\src";
 	//const char *dest = "C:\\Users\\Xinyu\\Downloads\\362_test\\repo";
 	//CHECKOUT
-	const char *src = "C:\\Users\\yintaowang\\test\\fred";
-	const char *dest = "C:\\Users\\yintaowang\\test\\repo";
+	const char *src = "C:\\Users\\yintaowang\\test\\repo";
+	const char *dest = "C:\\Users\\yintaowang\\test\\bob";
 	const char *r_manifest = "manifest_1.txt";
 	//const char *r_manifest = "label_test";
 	//merge
-	const char *repo_manifest = "label_test";
-	const char *target_path = "C:\\Users\\Xinyu\\Downloads\\362_test\\dory";
+	const char *repo_manifest = "manifest_3.txt";
+	const char *target_path = "C:\\Users\\yintaowang\\test\\bob";
 
 
 
 	if ((command_line == "CREATE") || (command_line == "CHECKIN") || (command_line == "CHECKOUT") || (command_line == "MERGE")) {
 		//get manifest path
-		if (command_line == "CHECKOUT") {
+		/*if (command_line == "CHECKOUT") {
 			strcpy(manifest_path, src);
 		}
 		else {
 			strcpy(manifest_path, dest);
-		}
+		}*/
 
 		//manifest file name
+		strcpy(manifest_path, repo_path);
 		string manifest_p = "dir ";
 		manifest_p.append(manifest_path);
 		manifest_p.append("\\manifest*.txt /b /a-d | find /v /c \"&#@\"");
@@ -185,6 +187,9 @@ int main(int argc, char *argv[]) {
 		addLabel(label_file, destination);
 	}
 	else if (command_line == "MERGE") {
+		//create manifest file
+		writeFile(manifest, message);
+		writeFile(manifest, ctime(&now));
 		//do check in ro make sure the target manifest is up-to-date
 		status = copyDir(target_path, repo_path, manifest, strlen(repo_path));
 		//merge
