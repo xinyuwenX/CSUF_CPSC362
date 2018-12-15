@@ -47,7 +47,6 @@ char* string_to_char(string s);
 string label_to_manifest(char *label, char filename[]);
 
 vector<string> get_manifest_information(string manifest_file);
-string get_src_manifest(string manifest_file);
 bool compare_manifests(string manifest_1, string manifest_2);
 vector<string> sort_manifests(vector<string> unsorted_manifests);
 vector<string> get_manifests_within_the_same_branch(string manifest_file, vector<string> all_manifests);
@@ -654,42 +653,6 @@ vector<string> get_manifest_information(string manifest_file) {
 	return information;
 }
 
-//get the source manifest file name in the 3rd line
-string get_src_manifest(string manifest_file) {
-	ifstream file;
-	char c;
-	string temp;
-	string src_manifest;
-	unsigned line_counter = 0;
-
-	file.open(manifest_file);
-	while (true) {
-		temp = "";
-		while (true) {
-			c = file.get();
-			if (c == '\n' || c == EOF)
-				break;
-			else
-				temp += c;
-		}
-		//skip the first 2 lines
-		if (line_counter < 2) {
-			line_counter++;
-			continue;
-		}
-		else if (line_counter > 3)
-			break;
-
-		src_manifest = temp;
-		if (c == EOF)
-			break;
-	}
-
-	file.close();
-
-	return src_manifest;
-}
-
 //return true if manifest_1 is older than manifest_2
 bool compare_manifests(string manifest_1, string manifest_2) {
 	string temp_1 = "";
@@ -794,7 +757,7 @@ vector<string> trace(string manifest_file, string repo_address) {
 		temp_str = manifest_families[0];
 		if (check_CREATE(temp_str))
 			break;
-		manifest_file = get_src_manifest(temp_str);
+		manifest_file = get_manifest_information(temp_str)[3];
 	}
 
 	return manifest_families;
