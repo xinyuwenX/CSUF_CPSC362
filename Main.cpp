@@ -49,7 +49,7 @@ string label_to_manifest(char *label, char filename[]);
 vector<string> get_manifest_information(string manifest_file);
 bool compare_manifests(string manifest_1, string manifest_2);
 vector<string> sort_manifests(vector<string> unsorted_manifests);
-vector<string> get_manifests_within_the_same_branch(string manifest_file, vector<string> all_manifests);
+vector<string> get_manifests_within_the_same_branch(string manifest_file, vector<string> all_manifests, string repo_address);
 bool check_CREATE(string manifest_file);
 vector<string> get_all_manifests(string repo_address);
 vector<string> trace(string manifest_file, string repo_address);
@@ -700,17 +700,16 @@ vector<string> sort_manifests(vector<string> unsorted_manifests) {
 }
 
 //if the given manifest is "CHECKIN", return all manifests older than itself within the same branch
-vector<string> get_manifests_within_the_same_branch(string manifest_file, vector<string> all_manifests) {
-
+vector<string> get_manifests_within_the_same_branch(string manifest_file, vector<string> all_manifests, string repo_address) {
 	vector<string> manifests_within_the_same_branch;
 
 	if (get_manifest_information(manifest_file)[0] == "CHECKIN") {
 		for (int i = 0; i < all_manifests.size(); i++) {
-			if (get_manifest_information(all_manifests[i])[0] == "CHECKIN"
-				&& (get_manifest_information(all_manifests[i])[1] == get_manifest_information(manifest_file)[1]))
+			if (get_manifest_information(repo_address + "\\" + all_manifests[i])[0] == "CHECKIN"
+				&& (get_manifest_information(repo_address + "\\" + all_manifests[i])[1] == get_manifest_information(repo_address + "\\" + manifest_file)[1]))
 				manifests_within_the_same_branch.push_back(all_manifests[i]);
-			else if (get_manifest_information(all_manifests[i])[1] == "CHECKOUT"
-				&& (get_manifest_information(all_manifests[i])[2] == get_manifest_information(manifest_file)[1]))
+			else if (get_manifest_information(repo_address + "\\" + all_manifests[i])[1] == "CHECKOUT"
+				&& (get_manifest_information(repo_address + "\\" + all_manifests[i])[2] == get_manifest_information(repo_address + "\\" + manifest_file)[1]))
 				manifests_within_the_same_branch.push_back(all_manifests[i]);
 		}
 	}
