@@ -11,6 +11,7 @@
 #define _CRT_SECURE_NO_DEPRECATE
 #define _CRT_SECURE_NO_WARNINGS
 
+#include <iostream>
 #include <io.h>
 #include <cstdio>
 #include <string>
@@ -27,8 +28,6 @@
 #include <ctime>
 #include <map>
 #include <vector>
-#include <filesystem>
-namespace fs = std::experimental::filesystem;
 
 using namespace std;
 
@@ -58,9 +57,6 @@ string find_grandma(vector<string> manifests_1, vector<string> manifests_2);
 string get_grandma(string manifest_1, string manifest_2, string repo_address);
 void merge(string repo_manifest, string target_manifest, string repo_path, string target_path);
 vector<string> mergeFiles(string repo_manifest, string target_manifest);
-
-void printtxt(string repo_address);
-vector<string> get_manifest_name(string repo_address);
 
 int num_of_manifest;
 
@@ -139,7 +135,12 @@ int main(int argc, char *argv[]) {
 		strcpy(manifest, manifest_path);
 		strcat(manifest, "\\");
 		strcat(manifest, manifest_name);
-		strcpy(message, command_line);
+		if (command_line=="MERGE") {
+			strcpy(message, "CHECKIN");
+		}
+		else {
+			strcpy(message, command_line);	
+		}
 		strcat(message, " ");
 		strcat(message, src);
 		strcat(message, " ");
@@ -687,17 +688,22 @@ bool compare_manifests(string manifest_1, string manifest_2) {
 
 //sort the vector of manifests, from the oldest to the newest
 vector<string> sort_manifests(vector<string> unsorted_manifests) {
-	int least_index = 0;
+	int least_index;
 	vector<string> sorted_manifests;
 
-	while (unsorted_manifests.size() > 0) {
-		for (int i = 1; i < unsorted_manifests.size(); i++) {
+	if (unsorted_manifests.size() <= 1)
+		return unsorted_manifests;
+	int size = unsorted_manifests.size();
+	while (size > 0) {
+		for (int i = 0; i < size; i++) {
+			least_index = 0;
 			if (compare_manifests(unsorted_manifests[least_index], unsorted_manifests[i]))
 				least_index = i;
 		}
-		swap(unsorted_manifests[least_index], unsorted_manifests[unsorted_manifests.size() - 1]);
-		sorted_manifests.push_back(unsorted_manifests[unsorted_manifests.size() - 1]);
+		swap(unsorted_manifests[least_index], unsorted_manifests[size - 1]);
+		sorted_manifests.push_back(unsorted_manifests[size - 1]);
 		unsorted_manifests.pop_back();
+		size--;
 	}
 
 	return sorted_manifests;
@@ -706,21 +712,34 @@ vector<string> sort_manifests(vector<string> unsorted_manifests) {
 //if the given manifest is "CHECKIN", return all manifests older than itself within the same branch
 vector<string> get_manifests_within_the_same_branch(string manifest_file, vector<string> all_manifests, string repo_address) {
 	vector<string> manifests_within_the_same_branch;
-
+	//test
+	cout << get_manifest_information(manifest_file)[0] << endl;
 	if (get_manifest_information(manifest_file)[0] == "CHECKIN") {
 		for (int i = 0; i < all_manifests.size(); i++) {
-			if (get_manifest_information(repo_address + "\\" + all_manifests[i])[0] == "CHECKIN"
-				&& (get_manifest_information(repo_address + "\\" + all_manifests[i])[1] == get_manifest_information(repo_address + "\\" + manifest_file)[1]))
+			//test
+			cout << get_manifest_information(repo_address + "\\" + all_manifests[i])[0] << endl;
+			cout << get_manifest_information(repo_address + "\\" + all_manifests[i])[1] << endl;
+			if ((get_manifest_information(repo_address + "\\" + all_manifests[i])[0] == "CHECKIN")
+				&& (get_manifest_information(repo_address + "\\" + all_manifests[i])[1] == get_manifest_information(manifest_file)[1]))
+			{
 				manifests_within_the_same_branch.push_back(all_manifests[i]);
-			else if (get_manifest_information(repo_address + "\\" + all_manifests[i])[1] == "CHECKOUT"
-				&& (get_manifest_information(repo_address + "\\" + all_manifests[i])[2] == get_manifest_information(repo_address + "\\" + manifest_file)[1]))
+			}
+			else if ((get_manifest_information(repo_address + "\\" + all_manifests[i])[0] == "CHECKOUT")
+				&& (get_manifest_information(repo_address + "\\" + all_manifests[i])[2] == get_manifest_information(manifest_file)[1]))
+			{
 				manifests_within_the_same_branch.push_back(all_manifests[i]);
+			}
 		}
 	}
 
+	//else if (get_manifest_information(manifest_file)[0] == "CHECKOUT" || get_manifest_information(manifest_file)[0] == "CREATE")
+		manifests_within_the_same_branch.push_back(manifest_file.substr(manifest_file.find("manifest")));
+
+
+
 	manifests_within_the_same_branch = sort_manifests(manifests_within_the_same_branch);
 
-	while (manifests_within_the_same_branch[manifests_within_the_same_branch.size() - 1] != manifest_file)
+	while (manifests_within_the_same_branch[manifests_within_the_same_branch.size() - 1] != manifest_file.substr(manifest_file.find("manifest")))
 		manifests_within_the_same_branch.pop_back();
 
 	return manifests_within_the_same_branch;
@@ -765,10 +784,11 @@ vector<string> trace(string manifest_file, string repo_address) {
 			manifest_families.push_back(temp[i]);
 		}
 		manifest_families = sort_manifests(manifest_families);
-		temp_str = manifest_families[0];
+		temp_str = repo_address + "\\" + manifest_families[0];
 		if (check_CREATE(temp_str))
 			break;
 		manifest_file = get_manifest_information(temp_str)[3];
+		manifest_file = repo_address + "\\" + manifest_file;
 	}
 
 	return manifest_families;
@@ -812,7 +832,7 @@ string get_grandma(string manifest_1, string manifest_2, string repo_address) {
 
 	manifests_1_test = trace(manifest_1, repo_address);
 	manifests_2_test = trace(manifest_2, repo_address);
-
+	cout << "kkkk" << endl;
 	grandma = find_grandma(manifests_1_test, manifests_2_test);
 	return grandma;
 }
@@ -854,53 +874,6 @@ void merge(string repo_manifest, string target_manifest, string repo_path, strin
 	}
 }
 
-void printtxt(string repo_address)
-{
-	vector <std::string> files;
-	string address = "C:\\Users\\ChInAhuang\\Desktop\\template.txt";
-	ofstream out(address);
-	string path = repo_address;
-	for (const auto & entry : fs::directory_iterator(path)) {
-		out << entry.path() << std::endl;
-	}
-}
-
-
-vector<string> get_manifest_name(string repo_address)
-{
-	printtxt(repo_address);
-	string file = "C:\\Users\\ChInAhuang\\Desktop\\template.txt";
-	vector<string> file_content;
-	ifstream in(file);
-	string line;
-	if (in)
-	{
-		while (getline(in, line))
-		{
-			if (line != "")
-			{
-				file_content.push_back(line);
-			}
-		}
-	}
-	else {
-		cout << "worng with vector<string> get_manifest_name input file" << endl;
-	}
-	string search = "manifest";
-	for (int i = 0; i < file_content.size(); i++) {
-
-		if ((file_content[i].find(search)) != string::npos)
-		{
-			file_content[i].substr(file_content[i].find(search));
-			//cout << file_content[i].substr(file_content[i].find(search)) << endl;
-
-		}
-
-	}
-	return file_content;
-}
-
-
 vector<string> mergeFiles(string repo_manifest, string target_manifest) {
 	vector<string> r_version_files = find_addresses_fileName(find_addresses(repo_manifest));
 	/*for (int i = 0; i < r_version_files.size(); i++) {
@@ -919,7 +892,7 @@ vector<string> mergeFiles(string repo_manifest, string target_manifest) {
 	vector<string> merge_files;
 
 	//compare artIDs to decide merge or not
-	for (int i = 0; i < r_version_files.size()-1; i++) {
+	for (int i = 0; i < r_version_files.size() - 1; i++) {
 		int t_index = find(t_version_files.begin(), t_version_files.end(), r_version_files[i]) - t_version_files.begin();
 		if (t_index != t_version_files.size()) {
 			//both tree has the file, compare their artIDs
