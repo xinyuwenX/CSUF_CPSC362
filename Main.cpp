@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {
 	const char *r_manifest = "manifest_1.txt";
 	//const char *r_manifest = "label_test";
 	//merge
-	const char *repo_manifest = "manifest_3.txt";
+	string repo_manifest = "manifest_3.txt";
 	const char *target_path = "C:\\Users\\yintaowang\\test\\bob";
 
 
@@ -193,7 +193,8 @@ int main(int argc, char *argv[]) {
 		//do check in ro make sure the target manifest is up-to-date
 		status = copyDir(target_path, repo_path, manifest, strlen(repo_path));
 		//merge
-		merge(repo_path + label_to_manifest(string_to_char(repo_manifest), string_to_char(repo_path)), manifest, repo_path, target_path);
+		//strcat(repo_path, "\\");
+		merge(repo_path + label_to_manifest(string_to_char("\\" + repo_manifest), string_to_char(repo_path)), manifest, repo_path, target_path);
 	}
 	else {
 		cout << "input command is invalid!!!" << endl;
@@ -506,12 +507,12 @@ vector<string> find_addresses(string file_name) {
 			line_counter++;
 			continue;
 		}
+		//cout << temp << endl;//merge test
 		all_addresses.push_back(temp);
 		if (c == EOF)
 			break;
 	}
 	file.close();
-
 	return all_addresses;
 }
 
@@ -850,7 +851,17 @@ void merge(string repo_manifest, string target_manifest, string repo_path, strin
 
 vector<string> mergeFiles(string repo_manifest, string target_manifest) {
 	vector<string> r_version_files = find_addresses_fileName(find_addresses(repo_manifest));
+	for (int i = 0; i < r_version_files.size(); i++) {
+		cout << "=========r==========" << endl;
+		cout << r_version_files[i] << endl;
+		cout << "===================" << endl;
+	}
 	vector<string> t_version_files = find_addresses_fileName(find_addresses(target_manifest));
+	for (int i = 0; i < t_version_files.size(); i++) {
+		cout << "==========t=========" << endl;
+		cout << t_version_files[i] << endl;
+		cout << "===================" << endl;
+	}
 	vector<string> r_version_artIds = find_addresses(repo_manifest);
 	vector<string> t_version_artIds = find_addresses(target_manifest);
 	vector<string> merge_files;
