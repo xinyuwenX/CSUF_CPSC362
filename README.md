@@ -1,5 +1,6 @@
 # CSUF_CPSC362
-Foundations of Software Engineering course project  
+Foundations of Software Engineering course project.
+This project is to build a VCS (version control system) project in C++. The whole project contains 3 parts.
 
 Group Members:  
 Xinyu Wen, xinyuwen@csu.fullerton.edu  
