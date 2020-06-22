@@ -1,4 +1,4 @@
-# CSUF_CPSC362
+# Version Control System
 Foundations of Software Engineering course project.
 This project is to build a VCS (version control system) project in C++. The whole project contains 3 parts.
 
